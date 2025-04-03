@@ -1,6 +1,6 @@
 # My website
 
-Source code for my website
+Backend template for blog websites
 
 ## How to run locally
 
@@ -37,6 +37,26 @@ run the test suite
 make test
 ```
 
+create mock articles
+```bash
+make articles
+```
+
+drop tables in postgresql
+```bash
+make drop
+```
+
+create admin user
+```bash
+make superuser
+```
+
+make tables in postgresql
+```bash
+make tables
+```
+
 clean up binary from the last build
 ```bash
 make clean
@@ -51,16 +71,16 @@ sudo -u postgres psql
 
 Then:
 ```sql
-CREATE DATABASE my_website_db;
-CREATE DATABASE my_website_db_test;
-CREATE USER my_website_admin WITH PASSWORD '123';
-GRANT ALL PRIVILEGES ON DATABASE my_website_db TO my_website_admin;
-GRANT ALL PRIVILEGES ON DATABASE my_website_db_test TO my_website_admin;
-ALTER USER my_website_admin WITH SUPERUSER;
+CREATE DATABASE blog_db;
+CREATE DATABASE blog_db_test;
+CREATE USER blog_admin WITH PASSWORD '123';
+GRANT ALL PRIVILEGES ON DATABASE blog_db TO blog_admin;
+GRANT ALL PRIVILEGES ON DATABASE blog_db_test TO blog_admin;
+ALTER USER blog_admin WITH SUPERUSER;
 ```
 
 
 Connect to my_website_db as my_website_admin:
 ```bash
-psql -h localhost -d my_website_db -U my_website_admin -p 5432
+psql -h localhost -d blog_db -U blog_admin -p 5432
 ```
