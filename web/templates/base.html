@@ -1,0 +1,90 @@
+{{ define "base.html" }}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="/static/css/article.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Website</title>
+        <style>
+            .nav-wrapper li:hover {
+                background-color: rgb(53, 53, 53);
+            }
+
+            .sidenav li:hover {
+                background-color: rgb(53, 53, 53);
+            }
+            .article-card {
+            width: 600px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            background: #fff;
+        }
+        .article-card img {
+            width: 768px;
+            height: 512px;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto;
+        }
+        .article-card-content {
+            padding: 15px;
+        }
+        .article-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .article-date {
+            font-size: 0.9rem;
+            color: #757575;
+            margin-bottom: 10px;
+        }
+        .article-description {
+            font-size: 1rem;
+            color: #333;
+        }
+        </style>
+    </head>   
+    <body style="background: rgb(16, 16, 16); color: rgb(253, 253, 238); font-family: 'Courier New', monospace;">
+
+        <nav style="border-bottom: 1px; border-color: white; border-style: solid; border-left: 0px; border-right: 0px; border-top: 0px;">
+            <div class="nav-wrapper black">
+                <a class="brand-logo center">My Website</a>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="fa-solid fa-bars"></i></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="/blog">Blog</a></li>
+                </ul>
+                <ul id="nav-mobile" class="left hide-on-med-and-down">
+                    <li><a href="/">About Me</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <ul class="sidenav black" style="width:100%;" id="mobile-demo">
+            <li><a style="color: white; text-align: center; margin-top: 80px; font-size: x-large;" href="/">Home</a></li>
+            <li><a style="color: white; text-align: center; margin-top: 20px; font-size: x-large;" href="#">Contact</a></li>
+            <li><a style="color: white; text-align: center; margin-top: 20px; font-size: x-large;" href="/blog">Blog</a></li>
+        </ul>
+
+
+        {{template "content" .}}
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const elems = document.querySelectorAll('.sidenav')
+                const instances = M.Sidenav.init(elems)
+            })
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </body>
+</html>
+
+{{ end }}

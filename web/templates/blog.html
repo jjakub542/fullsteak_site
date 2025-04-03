@@ -1,0 +1,71 @@
+{{ define "content" }}
+
+<div class="row" style="margin: 30px;">
+  <div class="col s10 m10 l3 offset-s1 offset-m1">
+      <div class="row" style="margin-top: 20px;">
+        <p>Some content goes here,
+          Tags, recomendations etc...
+          Pages count: {{ .pagesCount }}
+        </p>
+      </div>
+  </div>
+  <div class="col s12 m12 l4">
+      <div class="row">
+        {{ range .articles }}
+
+            <div class="col s12 m10 l4 offset-m1 offset-l3">
+          <div class="article-card">
+            <img src="/static/img/moon.jpg" alt="Article Image">
+            <div class="article-card-content">
+                <div class="article-title">Article Title</div>
+                <div class="article-date">Date: March 15, 2025</div>
+                <div class="article-description">This is a short description of the article. It gives an overview of the content.</div>
+            </div>
+        </div>
+          <div class="article-card">
+            <img src="/static/img/sample.jpg" alt="Article Image">
+            <div class="article-card-content">
+                <div class="article-title">Article Title</div>
+                <div class="article-date">Date: March 15, 2025</div>
+                <div class="article-description">This is a short description of the article. It gives an overview of the content.</div>
+            </div>
+        </div>
+            </div>
+        {{ end }}
+      </div>
+      <div class="divider"></div>
+      <div class="container center-align">
+        <ul class="pagination" id="pagination">
+          <li class="waves-effect" id="chevronLeft"><a href="/blog?page={{ .previous }}"><i class="material-icons">chevron_left</i></a></li>
+          <li class="waves-effect" id="chevronRight"><a href="/blog?page={{ .next }}"><i class="material-icons">chevron_right</i></a></li>
+        </ul>
+      </div>
+      </div>
+  </div>
+  </div>
+</div>
+
+<script>
+  const articlesCount = Number('{{ .articlesCount }}')
+  const pagesCount = Number('{{ .pagesCount }}')
+  const page = Number('{{ .page }}')
+  console.log(page)
+
+  const pagination = document.getElementById("chevronLeft")
+  let i = page
+  if (page == 2) {
+    i = page - 1
+  }
+  else if (page > 2) {
+    i = page - 2
+  }
+  for(i; i <= page+5; i++) {
+    pagination.insertAdjacentHTML("beforeend",`<li class="waves-effect" style="margin-right: 5px; margin-left: 5px;" id="page#${i}"><a href="/blog?page=${i}">${i}</a></li>`)
+  }
+
+  document.getElementById(`page#${page}`).classList.add("active")
+
+
+</script>
+
+{{ end }}
