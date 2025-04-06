@@ -1,17 +1,42 @@
 {{ define "content" }}
 
-<div class="container">
-<div class="row" style="margin-top: 50px;">
-
-    <div class="col s10 m10 l4 offset-s1 offset-m1" style="font-size: larger;">
-        <p>Some content here</p>
+  <!-- Hero Section -->
+  <header class="hero" id="home">
+    <div class="hero-text">
+      <h1>Transform Your Ideas into Reality</h1>
+      <p>Crafting stunning digital experiences that captivate.</p>
+      <a href="#contact" class="cta-button">Start Now</a>
     </div>
+  </header>
 
-    <div class="col s10 m10 l7 offset-s1 offset-m1 offset-l1">
-        <p>Some content here</p>
+  <!-- About Us Section -->
+  <section class="about" id="about">
+    <div class="container">
+      <h2>About Us</h2>
+      <p>At CreativeHub, we specialize in delivering unique, high-quality digital experiences. Our team is passionate about creating websites and applications that bring value to businesses and users alike.</p>
     </div>
+  </section>
 
-</div>
-</div>
+  <!-- Services Section -->
+  <section class="content" id="services">
+    <div class="container">
+      <h2>Our Services</h2>
+      <p>We offer custom web design, creative branding, and full-stack development that elevate your business.</p>
+    </div>
+  </section>
 
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <h2>Contact Us</h2>
+      <p>Have a project in mind? Get in touch with us, and let's bring your ideas to life!</p>
+      <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit" class="cta-button">Send Message</button>
+      </form>
+    </div>
+  </section>
+  
 {{ end }}

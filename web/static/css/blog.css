@@ -1,0 +1,133 @@
+/* Blog Section */
+.blog {
+    padding: 60px 20px;
+    background-color: #f4f4f4;
+  }
+  
+  .blog h1 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 40px;
+  }
+  
+  /* Article Grid */
+  .articles {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr); /* Default to 1 column on small devices */
+    gap: 20px;
+    justify-items: center;
+    margin-bottom: 40px;
+  }
+  
+  .article-card {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 800px; /* Limit max width of article cards */
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .article-card:hover {
+    transform: translateY(-10px);
+  }
+  
+  .article-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .article-content {
+    padding: 20px;
+  }
+  
+  .article-content h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+  
+  .article-content p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .read-more {
+    color: #008080;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  
+  .read-more:hover {
+    color: #00b8b8;
+  }
+  
+  /* Pagination Styles */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  
+  .pagination a {
+    padding: 10px 20px;
+    margin: 0 5px;
+    background-color: #00b8b8;
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  
+  .pagination a:hover {
+    background-color: #008080;
+  }
+  
+  .pagination .page-number {
+    background-color: #008080;
+  }
+  
+  .pagination a.prev,
+  .pagination a.next {
+    font-size: 16px;
+  }
+  
+  /* Responsive Styles for Blog Page */
+  
+  /* For small and medium devices (1 column) */
+  @media (max-width: 768px) {
+    .articles {
+      grid-template-columns: repeat(1, 1fr); /* 1 card per row on small and medium devices */
+    }
+  
+    .pagination a {
+      padding: 6px 12px;
+    }
+  }
+  
+  /* For large devices (3 columns) */
+  @media (min-width: 1024px) and (max-width: 1440px) {
+    .articles {
+      grid-template-columns: repeat(3, 1fr); /* 3 cards per row on large devices */
+    }
+  
+    .pagination a {
+      padding: 8px 15px;
+    }
+  }
+  
+  /* For extra large devices (4 columns) */
+  @media (min-width: 1441px) {
+    .articles {
+      grid-template-columns: repeat(4, 1fr); /* 4 cards per row on extra large devices */
+    }
+  
+    .pagination a {
+      padding: 10px 20px;
+    }
+  }

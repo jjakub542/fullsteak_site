@@ -2,47 +2,43 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="/static/css/article.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Website</title>
-    </head>   
-    <body style="background: rgb(16, 16, 16); color: rgb(253, 253, 238); font-family: 'Courier New', monospace;">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="/static/css/blog.css">
+</head>
+<body>
 
-        <nav style="border-bottom: 1px; border-color: white; border-style: solid; border-left: 0px; border-right: 0px; border-top: 0px;">
-            <div class="nav-wrapper black">
-                <a class="brand-logo center">My Website</a>
-                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="fa-solid fa-bars"></i></a>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="/blog">Blog</a></li>
-                </ul>
-                <ul id="nav-mobile" class="left hide-on-med-and-down">
-                    <li><a href="/">About Me</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                </ul>
-            </div>
-        </nav>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <a href="/">Website</a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/#about">About Us</a></li>
+      <li><a href="/#services">Services</a></li>
+      <li><a href="/#contact">Contact</a></li>
+      <li><a href="/blog">blog</a></li>
+    </ul>
+  </nav>
 
-        <ul class="sidenav black" style="width:100%;" id="mobile-demo">
-            <li><a style="color: white; text-align: center; margin-top: 80px; font-size: x-large;" href="/">Home</a></li>
-            <li><a style="color: white; text-align: center; margin-top: 20px; font-size: x-large;" href="#">Contact</a></li>
-            <li><a style="color: white; text-align: center; margin-top: 20px; font-size: x-large;" href="/blog">Blog</a></li>
-        </ul>
+  {{ template "content" .}}
 
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>&copy; 2025 Website. All rights reserved.</p>
+      <ul class="footer-links">
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">Support</a></li>
+      </ul>
+    </div>
+  </footer>
 
-        {{template "content" .}}
-
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const elems = document.querySelectorAll('.sidenav')
-                const instances = M.Sidenav.init(elems)
-            })
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    </body>
+</body>
 </html>
 
 {{ end }}
