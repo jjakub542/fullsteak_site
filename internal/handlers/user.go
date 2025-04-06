@@ -37,14 +37,6 @@ func (h *Handler) BlogPage(c echo.Context) error {
 	})
 }
 
-func (h *Handler) ContactPage(c echo.Context) error {
-	return c.Render(http.StatusOK, "contact.html", nil)
-}
-
-func (h *Handler) ProjectsPage(c echo.Context) error {
-	return c.Render(http.StatusOK, "projects.html", nil)
-}
-
 func (h *Handler) ArticleView(c echo.Context) error {
 	id := c.Param("article_id")
 	article, err := h.Repository.Article.GetOneById(id)

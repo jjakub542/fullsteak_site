@@ -17,6 +17,10 @@ func (h *Handler) AdminHomePage(c echo.Context) error {
 	return c.Render(http.StatusOK, "admin/home.html", articles)
 }
 
+func (h *Handler) AdminStatsPage(c echo.Context) error {
+	return c.Render(http.StatusOK, "admin/statistics.html", nil)
+}
+
 func (h *Handler) ArticleCreate(c echo.Context) error {
 	article := &domain.Article{
 		Title:       c.FormValue("title"),

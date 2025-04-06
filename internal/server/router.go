@@ -20,12 +20,12 @@ func (s *Server) Router() http.Handler {
 	h := handlers.Handler{Repository: s.repository}
 
 	e.GET("/", h.HomePage)
-	e.GET("/contact", h.ContactPage)
-	e.GET("/projects", h.ProjectsPage)
+
 	e.GET("/blog", h.BlogPage)
 	e.GET("/blog/:article_id", h.ArticleView)
 
 	adminGroup := e.Group("/admin")
+	adminGroup.GET("/statistics", session.AdminAuth(h.AdminStatsPage))
 	adminGroup.GET("/articles", session.AdminAuth(h.AdminHomePage))
 	adminGroup.POST("/articles/create", session.AdminAuth(h.ArticleCreate))
 	adminGroup.POST("/articles/:article_id/delete", session.AdminAuth(h.ArticleDelete))
