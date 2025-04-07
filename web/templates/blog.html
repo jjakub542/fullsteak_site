@@ -3,78 +3,104 @@
 <!-- Blog Section -->
 <section class="blog">
   <div class="container">
-    <h1>Our Latest Articles</h1>
+    <h1 id="header">Our Latest Articles</h1>
+
     <div class="articles">
-      <!-- Article Card 1 -->
+
+      {{ range .articles }}
+
       <div class="article-card">
         <img src="/static/img/sample.jpg" alt="Article Image">
         <div class="article-content">
-          <h2>Article Title One</h2>
+          <h2>{{ .Title }}</h2>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur euismod nunc sit amet odio dictum...</p>
-          <a href="#" class="read-more">Read More</a>
+          <a href="/blog/{{ .Id }}" class="read-more">Read More</a>
         </div>
       </div>
 
-      <!-- Article Card 2 -->
-      <div class="article-card">
-        <img src="/static/img/sample.jpg" alt="Article Image">
-        <div class="article-content">
-          <h2>Article Title Two</h2>
-          <p>Donec auctor mauris ut mauris imperdiet, at facilisis magna malesuada. Etiam suscipit dolor ut velit...</p>
-          <a href="#" class="read-more">Read More</a>
-        </div>
-      </div>
+      {{ end }}
 
-      <!-- Article Card 3 -->
-      <div class="article-card">
-        <img src="/static/img/moon.jpg" alt="Article Image">
-        <div class="article-content">
-          <h2>Article Title Three</h2>
-          <p>Quisque fermentum, purus eget auctor vehicula, lacus tortor condimentum orci, at vehicula arcu dui vel...</p>
-          <a href="#" class="read-more">Read More</a>
-        </div>
-      </div>
-
-      <!-- Article Card 4 -->
-      <div class="article-card">
-        <img src="/static/img/sample.jpg" alt="Article Image">
-        <div class="article-content">
-          <h2>Article Title Four</h2>
-          <p>Aenean eu velit sit amet orci pretium volutpat. Fusce lacinia ut libero non pretium. Curabitur...</p>
-          <a href="#" class="read-more">Read More</a>
-        </div>
-      </div>
-
-      <!-- Article Card 5 -->
-      <div class="article-card">
-        <img src="/static/img/sample.jpg" alt="Article Image">
-        <div class="article-content">
-          <h2>Article Title Four</h2>
-          <p>Aenean eu velit sit amet orci pretium volutpat. Fusce lacinia ut libero non pretium. Curabitur...</p>
-          <a href="#" class="read-more">Read More</a>
-        </div>
-      </div>
-
-      <!-- Article Card 6 -->
-      <div class="article-card">
-        <img src="/static/img/sample.jpg" alt="Article Image">
-        <div class="article-content">
-          <h2>Article Title Four</h2>
-          <p>Aenean eu velit sit amet orci pretium volutpat. Fusce lacinia ut libero non pretium. Curabitur...</p>
-          <a href="#" class="read-more">Read More</a>
-        </div>
-      </div>
     </div>
 
     <!-- Pagination -->
-    <div class="pagination">
-      <a href="#" class="prev" style="margin-right: 20px;">&#60;</a>
-      <a href="#" class="page-number">1</a>
-      <a href="#" class="page-number">2</a>
-      <a href="#" class="page-number">3</a>
-      <a href="#" class="next" style="margin-left: 20px;">&gt;</a>
+    <div class="pagination" id="pagination" style="margin-bottom: 93px;">
     </div>
   </div>
 </section>
+
+<script>
+  const pagination = document.getElementById("pagination")
+  const page = Number('{{ .page }}')
+  const articlesCount = Number('{{ .articlesCount }}')
+  const pagesCount = Number('{{ .pagesCount }}')
+
+  if (page === 1) {
+    pagination.innerHTML = `
+      <a class="pagination-button-current">1</a>
+      <a href="/blog?page=2" class="pagination-button-active">2</a>
+      <a href="/blog?page=3" class="pagination-button-active">3</a>
+      <a href="/blog?page=${pagesCount}" class="pagination-button-active" style="margin-left: 30px;">... ${pagesCount}</a>`
+  } else if (page === pagesCount) {
+    pagination.innerHTML = `
+      <a href="/blog?page=1" class="pagination-button-active" style="margin-right: 20px;">&#60;&#60;</a>
+      <a href="/blog?page=${page-2}" class="pagination-button-active">${page-2}</a>
+      <a href="/blog?page=${page-1}" class="pagination-button-active">${page-1}</a>
+      <a class="pagination-button-current">${page}</a>`
+  } else if (page + 1 === pagesCount) {
+    pagination.innerHTML = `
+      <a href="/blog?page=1" class="pagination-button-active" style="margin-right: 20px;">&#60;&#60;</a>
+      <a href="/blog?page=${page-2}" class="pagination-button-active">${page-2}</a>
+      <a href="/blog?page=${page-1}" class="pagination-button-active">${page-1}</a>
+      <a class="pagination-button-current">${page}</a>
+      <a href="/blog?page=${page+1}" class="pagination-button-active">${page+1}</a>
+      <a href="/blog?page=${pagesCount}" class="pagination-button-active" style="margin-left: 30px;">... ${pagesCount}</a>`
+  } else {
+    pagination.innerHTML = `
+      <a href="/blog?page=1" class="pagination-button-active" style="margin-right: 20px;">&#60;&#60;</a>
+      <a href="/blog?page=${page-1}" class="pagination-button-active">${page-1}</a>
+      <a class="pagination-button-current">${page}</a>
+      <a href="/blog?page=${page+1}" class="pagination-button-active">${page+1}</a>
+      <a href="/blog?page=${page+2}" class="pagination-button-active">${page+2}</a>
+      <a href="/blog?page=${pagesCount}" class="pagination-button-active" style="margin-left: 30px;">... ${pagesCount}</a>`
+  }
+
+  if (articlesCount === 0) {
+    pagination.innerHTML = ''
+    document.getElementById("header").innerText = "No articles yet"
+  }
+
+  if (pagesCount === 1) {
+    pagination.innerHTML = ''
+  }
+
+  if (pagesCount === 2 && page === 1) {
+    pagination.innerHTML = `<a class="pagination-button-current">1</a>
+      <a href="/blog?page=2" class="pagination-button-active">2</a>`
+  }
+
+  if (pagesCount === 2 && page === 2) {
+    pagination.innerHTML = `<a href="/blog?page=1" class="pagination-button-active">1</a>
+      <a class="pagination-button-current">2</a>`
+  }
+
+  if (pagesCount === 3 && page === 1) {
+    pagination.innerHTML = `<a class="pagination-button-current">1</a>
+      <a href="/blog?page=2" class="pagination-button-active">2</a>
+            <a href="/blog?page=3" class="pagination-button-active">3</a>`
+  }
+
+  if (pagesCount === 3 && page === 2) {
+    pagination.innerHTML = `<a href="/blog?page=1" class="pagination-button-active">1</a>
+      <a class="pagination-button-current">2</a>
+            <a href="/blog?page=3" class="pagination-button-active">3</a>`
+  }
+
+  if (pagesCount === 3 && page === 3) {
+    pagination.innerHTML = `<a href="/blog?page=1" class="pagination-button-active">1</a>
+      <a href="/blog?page=2" class="pagination-button-active">2</a>
+            <a class="pagination-button-current">3</a>`
+  }
+
+</script>
 
 {{ end }}

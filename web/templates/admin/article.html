@@ -56,9 +56,13 @@
   </div>
   </div>
   <div class="col s12 m12 l7">
-      <div class="row" style="margin: 20px; color:black">
-        <div id="markdown-output"></div>
+    <section class="article">
+      <div class="container">
+        <div id="markdown-content">
+          <!-- markdown-it output will go here -->
+        </div>
       </div>
+  </section>
   </div>
 </div>
 
@@ -151,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
   ${document.getElementById("content").value}
       `;
       const htmlContent = md.render(markdownText);
-      document.getElementById('markdown-output').innerHTML = htmlContent;
+      document.getElementById('markdown-content').innerHTML = htmlContent;
   }
 
   renderMarkdown()

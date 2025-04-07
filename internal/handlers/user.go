@@ -16,7 +16,7 @@ func (h *Handler) BlogPage(c echo.Context) error {
 	if page < 1 {
 		page = 1
 	}
-	limit := 5
+	limit := 8
 	offset := (page - 1) * limit
 	articles, err := h.Repository.Article.GetAllPublicBetween(limit, offset)
 	if err != nil {
