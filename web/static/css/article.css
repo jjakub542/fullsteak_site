@@ -1,5 +1,7 @@
 .article {
-    padding: 60px 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 60px;
     background-color: #fdfdfd;
     font-family: 'Consolas', monospace;
     line-height: 1.7;
