@@ -11,6 +11,10 @@ func (h *Handler) HomePage(c echo.Context) error {
 	return c.Render(http.StatusOK, "home.html", nil)
 }
 
+func (h *Handler) PortfolioPage(c echo.Context) error {
+	return c.Render(http.StatusOK, "portfolio.html", nil)
+}
+
 func (h *Handler) BlogPage(c echo.Context) error {
 	page, _ := strconv.Atoi(c.QueryParam("page"))
 	if page < 1 {

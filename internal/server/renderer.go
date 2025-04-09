@@ -29,6 +29,7 @@ func Renderer() *templateRegistry {
 	templates := make(map[string]*template.Template)
 
 	templates["home.html"] = template.Must(template.ParseFiles("web/templates/home.html", "web/templates/base.html"))
+	templates["portfolio.html"] = template.Must(template.ParseFiles("web/templates/portfolio.html", "web/templates/base.html"))
 	templates["blog.html"] = template.Must(template.ParseFiles("web/templates/blog.html", "web/templates/base.html"))
 	templates["article.html"] = template.Must(template.ParseFiles("web/templates/article.html", "web/templates/base.html"))
 

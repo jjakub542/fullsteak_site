@@ -20,7 +20,7 @@ func (s *Server) Router() http.Handler {
 	h := handlers.Handler{Repository: s.repository}
 
 	e.GET("/", h.HomePage)
-
+	e.GET("/portfolio", h.PortfolioPage)
 	e.GET("/blog", h.BlogPage)
 	e.GET("/blog/:article_id", h.ArticleView)
 
