@@ -9,12 +9,20 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (h *Handler) AdminHomePage(c echo.Context) error {
+func (h *Handler) AdminIndexPage(c echo.Context) error {
 	articles, err := h.Repository.Article.GetAll()
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
-	return c.Render(http.StatusOK, "admin/home.html", articles)
+	return c.Render(http.StatusOK, "admin/index.html", articles)
+}
+
+func (h *Handler) AdminArticlesPage(c echo.Context) error {
+	articles, err := h.Repository.Article.GetAll()
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
+	}
+	return c.Render(http.StatusOK, "admin/articles.html", articles)
 }
 
 func (h *Handler) AdminStatsPage(c echo.Context) error {

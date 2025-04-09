@@ -1,34 +1,110 @@
-/* Base styling */
-body {
-font-family: 'Courier New', monospace;
-background-color: #fdfdfd;
-color: #333;
-}
-
-.card {
-position: relative;
-overflow: hidden;
-}
-.card-image {
-width: 100%;
-aspect-ratio: 1 / 1; /* Ensures square images */
-}
-.card-image img {
-width: 100%;
-height: 100%;
-object-fit: cover; /* Crop images to fit */
-}
-.delete-btn {
-position: absolute;
-top: 10px;
-right: 10px;
-background-color: red;
-}
-
-.nav-wrapper li:hover {
-background-color: rgb(53, 53, 53);
-}
-
-.sidenav li:hover {
-background-color: rgb(53, 53, 53);
-}
+:root {
+    --beige-light: #fdfaf6;
+    --beige: #f5e9d3;
+    --beige-dark: #d4bfa3;
+    --text: #4e3d2c;
+    --highlight: #e8d6b9;
+    --border: #e0d0b7;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--beige-light);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  nav.sidebar {
+    width: 250px;
+    min-width: 250px;
+    background: linear-gradient(160deg, var(--beige), var(--beige-dark));
+    border-right: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  nav.sidebar .logo {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--text);
+  }
+  
+  nav.sidebar a {
+    text-decoration: none;
+    padding: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  
+  nav.sidebar a:hover,
+  nav.sidebar a.active {
+    background-color: var(--highlight);
+  }
+  
+  main {
+    flex: 1;
+    padding: 2rem;
+  }
+  
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+  }
+  
+  h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+  }
+  
+  /* Top navbar on small screens */
+  @media (max-width: 768px) {
+    .layout {
+      flex-direction: column;
+    }
+  
+    nav.sidebar {
+      flex-direction: row;
+      width: 100%;
+      min-width: 100%;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+  
+    nav.sidebar .logo {
+      margin-bottom: 0;
+    }
+  
+    nav.sidebar a {
+      padding: 0.8rem 1rem;
+      border-bottom: none;
+      border-right: 1px solid var(--border);
+      flex: 1;
+      text-align: center;
+    }
+  
+    nav.sidebar a:last-child {
+      border-right: none;
+    }
+  }
+  

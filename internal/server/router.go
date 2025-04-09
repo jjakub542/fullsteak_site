@@ -25,8 +25,9 @@ func (s *Server) Router() http.Handler {
 	e.GET("/blog/:article_id", h.ArticleView)
 
 	adminGroup := e.Group("/admin")
+	adminGroup.GET("/", session.AdminAuth(h.AdminIndexPage))
 	adminGroup.GET("/statistics", session.AdminAuth(h.AdminStatsPage))
-	adminGroup.GET("/articles", session.AdminAuth(h.AdminHomePage))
+	adminGroup.GET("/articles", session.AdminAuth(h.AdminArticlesPage))
 	adminGroup.POST("/articles/create", session.AdminAuth(h.ArticleCreate))
 	adminGroup.POST("/articles/:article_id/delete", session.AdminAuth(h.ArticleDelete))
 	adminGroup.POST("/articles/:article_id/update", session.AdminAuth(h.ArticleUpdate))
