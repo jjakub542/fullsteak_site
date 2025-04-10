@@ -1,8 +1,8 @@
 package handlers
 
 import (
+	"fullsteak/internal/domain"
 	"log"
-	"my_website/internal/domain"
 	"net/http"
 
 	"github.com/google/uuid"
