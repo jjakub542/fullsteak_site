@@ -1,26 +1,38 @@
 {{ define "base.html" }}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Articles - BeigeBoard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/admin/styles.css" />
+  <link rel="stylesheet" href="/static/css/admin/articles.css" />
+  <link rel="stylesheet" href="/static/css/admin/editor.css" />
 </head>
 <body>
-    <div class="layout">
-        <nav class="sidebar">
-            <div class="logo">BeigeBoard</div>
-            <a href="/admin/articles" class="active">📄 Articles</a>
-            <a href="/admin/statistics">📊 Statistics</a>
-            <a href="/admin/logout">🚪 Logout</a>
-        </nav>
-
-        <main>
-            {{ template "content" .}}
-        </main>
-    </div>
+  <div class="layout">
+    <nav class="sidebar">
+      <a href="/admin" class="{{if eq .Page "index"}}active{{end}}">
+        <span class="icon">🏠</span><span>Home</span>
+      </a>
+      <a href="/admin/articles" class="{{if eq .Page "articles"}}active{{end}}">
+        <span class="icon">📄</span><span>Articles</span>
+      </a>
+      <a href="/admin/statistics" class="{{if eq .Page "statistics"}}active{{end}}">
+        <span class="icon">📊</span><span>Statistics</span>
+      </a>
+      <a href="/admin/logout" class="{{if eq .Page "logout"}}active{{end}}">
+        <span class="icon">🚪</span><span>Logout</span>
+      </a>
+    </nav>
+    <main>
+      {{ template "content" .}}
+    </main>
+  </div>
 </body>
 </html>
+
 {{ end }}

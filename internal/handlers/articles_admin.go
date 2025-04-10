@@ -10,11 +10,9 @@ import (
 )
 
 func (h *Handler) AdminIndexPage(c echo.Context) error {
-	articles, err := h.Repository.Article.GetAll()
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
-	}
-	return c.Render(http.StatusOK, "admin/index.html", articles)
+	return c.Render(http.StatusOK, "admin/index.html", map[string]interface{}{
+		"Page": "index",
+	})
 }
 
 func (h *Handler) AdminArticlesPage(c echo.Context) error {
@@ -22,11 +20,16 @@ func (h *Handler) AdminArticlesPage(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
-	return c.Render(http.StatusOK, "admin/articles.html", articles)
+	return c.Render(http.StatusOK, "admin/articles.html", map[string]interface{}{
+		"Articles": articles,
+		"Page":     "articles",
+	})
 }
 
 func (h *Handler) AdminStatsPage(c echo.Context) error {
-	return c.Render(http.StatusOK, "admin/statistics.html", nil)
+	return c.Render(http.StatusOK, "admin/statistics.html", map[string]interface{}{
+		"Page": "statistics",
+	})
 }
 
 func (h *Handler) ArticleCreate(c echo.Context) error {
@@ -126,5 +129,8 @@ func (h *Handler) ArticleEditPage(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
 	article.Images = append(article.Images, images...)
-	return c.Render(http.StatusOK, "admin/article.html", article)
+	return c.Render(http.StatusOK, "admin/editor.html", map[string]interface{}{
+		"Article": article,
+		"Page":    "articles",
+	})
 }

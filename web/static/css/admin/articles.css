@@ -1,0 +1,317 @@
+/* Root Variables */
+:root {
+  --bg-color: #f4f4f9;
+  --card-bg: #ffffff;
+  --highlight: #ff7b54;
+  --highlight-hover: #ff9e7d;
+  --border: #e0e0e0;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --transition: 0.3s ease;
+}
+
+/* Page Container */
+.page-container {
+  width: 100%;
+  margin: 0 auto; /* Center the content */
+  padding: 2rem; /* Padding around the content */
+}
+
+/* Articles Container */
+.articles-container {
+  display: grid;
+  grid-template-columns: 1fr; /* Default to 1 column on small devices */
+  gap: 2rem;
+  margin: 0 auto;
+  padding-top: 2rem;
+}
+
+/* New Article Form */
+.new-article {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Make form take up available space */
+  min-width: 480px; /* Prevent it from getting too narrow */
+  margin: 0 auto; /* Center the form */
+}
+
+.new-article h2 {
+  margin-bottom: 1.5rem;
+}
+
+.new-article label {
+  font-weight: 600;
+  margin-top: 1rem;
+  display: block;
+}
+
+.new-article input, 
+.new-article textarea {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.new-article button {
+  width: 100%;
+  background-color: var(--highlight-hover);
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: background-color var(--transition);
+}
+
+.new-article button:hover {
+  background-color: var(--highlight);
+}
+
+/* Articles List */
+.articles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.article-card {
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  max-width: 600px; /* Max width for cards */
+  width: 100%;
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  transition: box-shadow var(--transition);
+  border: 1px solid var(--border); /* Added border */
+  margin: 0 auto; /* Center the card */
+}
+
+.article-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+}
+
+.article-img {
+  width: 100%; /* Make the image fill the card's width */
+  height: 200px; /* Fixed height for consistency */
+  object-fit: cover; /* Ensure the image covers the space without distortion */
+  border-radius: 8px;
+}
+
+.article-info {
+  flex-grow: 1;
+  margin-top: 1rem;
+}
+
+.article-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.article-desc {
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.article-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.created-date, .updated-date {
+  margin-right: 1rem;
+}
+
+.btn-edit {
+  display: inline-block;
+  background-color: var(--highlight-hover);
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color var(--transition);
+}
+
+.btn-edit:hover {
+  background-color: var(--highlight);
+}
+
+/* Mobile: Stacked layout */
+@media (max-width: 700px) {
+  .articles-container {
+    grid-template-columns: 1fr; /* Stack in one column */
+  }
+
+  .new-article {
+    margin-bottom: 2rem;
+  }
+
+  .article-card {
+    flex-direction: column; /* Stack article card elements */
+    align-items: center;
+    text-align: center;
+    max-width: 100%; /* Allow full width on small screens */
+  }
+
+  .article-img {
+    width: 100%; /* Make the image full width on small screens */
+    height: 200px;
+  }
+
+  .article-info {
+    width: 100%; /* Full width for article info */
+    text-align: center;
+  }
+
+  .article-meta {
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .created-date, .updated-date {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .btn-edit {
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+
+/* Medium devices (700px to 1024px): One column layout */
+@media (min-width: 700px) and (max-width: 1024px) {
+  .articles-container {
+    grid-template-columns: 1fr; /* Stack in one column */
+  }
+
+  .new-article {
+    max-width: 900px;
+    width: 80%; /* Form takes up 80% of the screen on medium devices */
+    margin: 0 auto; /* Center the form */
+  }
+
+  .article-card {
+    max-width: 900px; /* Allow article cards to take up full width */
+    width: 80%;
+  }
+
+  .article-img {
+    width: 100%;
+    height: 200px;
+  }
+
+  .article-info {
+    width: 100%;
+    text-align: center;
+  }
+
+  .article-meta {
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .created-date, .updated-date {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .btn-edit {
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+
+/* Large devices (1024px to 1366px): One column layout, more space */
+@media (min-width: 1024px) and (max-width: 1366px) {
+  .articles-container {
+    grid-template-columns: 1fr; /* Stack in one column */
+  }
+
+  .new-article {
+    max-width: 1000px; /* Form becomes wider than article cards */
+    width: 70%
+  }
+
+  .article-card {
+    max-width: 1000px; /* Allow article cards to take up full width */
+    width: 70%;
+  }
+
+  .article-img {
+    width: 100%;
+    height: 200px;
+  }
+
+  .article-info {
+    width: 100%;
+    text-align: center;
+  }
+
+  .article-meta {
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .created-date, .updated-date {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .btn-edit {
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+
+/* Large devices (above 1366px): Two columns layout */
+@media (min-width: 1366px) {
+  .articles-container {
+    grid-template-columns: 1fr 3fr; /* Two columns layout */
+  }
+
+  .new-article {
+    max-width: 1000px; /* Form becomes even wider */
+  }
+
+  .articles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .article-card {
+    max-width: 600px; /* Max width for cards */
+    width: 90%;
+  }
+}
+
+/* Extra Large Devices (above 1600px) */
+@media (min-width: 1600px) {
+  .articles-container {
+    max-width: 1600px; /* Ensure content does not stretch too wide */
+    margin: 0 auto; /* Center the content */
+  }
+
+  .new-article {
+    min-width: 600px; /* Form expands further */
+  }
+
+  .article-card {
+    max-width: 700px; /* Allow article cards to be a bit wider */
+  }
+}
