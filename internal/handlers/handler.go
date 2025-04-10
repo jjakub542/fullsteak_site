@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"my_website/internal/repository"
+	"fullsteak/internal/repository"
 )
 
 type Handler struct {

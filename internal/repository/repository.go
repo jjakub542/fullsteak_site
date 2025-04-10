@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"my_website/internal/domain"
+	"fullsteak/internal/domain"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )

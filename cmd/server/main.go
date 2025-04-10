@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"my_website/internal/server"
+	"fullsteak/internal/server"
 )
 
 func main() {

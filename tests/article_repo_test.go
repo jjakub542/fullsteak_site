@@ -1,8 +1,8 @@
 package tests
 
 import (
-	"my_website/internal/domain"
-	"my_website/internal/repository"
+	"fullsteak/internal/domain"
+	"fullsteak/internal/repository"
 	"testing"
 )
 

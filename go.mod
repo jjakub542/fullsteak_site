@@ -1,4 +1,4 @@
-module my_website
+module fullsteak
 
 go 1.22.0
 

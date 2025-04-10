@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"my_website/internal/domain"
+	"fullsteak/internal/domain"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )

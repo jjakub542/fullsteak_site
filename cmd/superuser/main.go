@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"fullsteak/internal/database"
+	"fullsteak/internal/domain"
+	"fullsteak/internal/repository"
 	"log"
-	"my_website/internal/database"
-	"my_website/internal/domain"
-	"my_website/internal/repository"
 
 	_ "github.com/joho/godotenv/autoload"
 )

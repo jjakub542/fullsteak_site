@@ -71,16 +71,16 @@ sudo -u postgres psql
 
 Then:
 ```sql
-CREATE DATABASE blog_db;
-CREATE DATABASE blog_db_test;
-CREATE USER blog_admin WITH PASSWORD '123';
-GRANT ALL PRIVILEGES ON DATABASE blog_db TO blog_admin;
-GRANT ALL PRIVILEGES ON DATABASE blog_db_test TO blog_admin;
-ALTER USER blog_admin WITH SUPERUSER;
+CREATE DATABASE fullsteak_db;
+CREATE DATABASE fullsteak_db_test;
+CREATE USER fullsteak_admin WITH PASSWORD '123';
+GRANT ALL PRIVILEGES ON DATABASE fullsteak_db TO fullsteak_admin;
+GRANT ALL PRIVILEGES ON DATABASE fullsteak_db_test TO fullsteak_admin;
+ALTER USER fullsteak_admin WITH SUPERUSER;
 ```
 
 
 Connect to my_website_db as my_website_admin:
 ```bash
-psql -h localhost -d blog_db -U blog_admin -p 5432
+psql -h localhost -d fullsteak_db -U fullsteak_admin -p 5432
 ```

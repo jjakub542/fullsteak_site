@@ -10,9 +10,9 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/joho/godotenv/autoload"
 
-	"my_website/internal/database"
-	"my_website/internal/repository"
-	"my_website/internal/session"
+	"fullsteak/internal/database"
+	"fullsteak/internal/repository"
+	"fullsteak/internal/session"
 )
 
 type Server struct {

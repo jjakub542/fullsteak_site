@@ -45,11 +45,11 @@ func ConnectTest() *pgxpool.Pool {
 	fmt.Println(username)
 	connStr := fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s",
-		"blog_admin",
+		"fullsteak_admin",
 		"123",
 		"localhost",
 		"5432",
-		"blog_db_test",
+		"fullsteak_db_test",
 	)
 	db, err := pgxpool.New(context.Background(), connStr)
 	if err != nil {

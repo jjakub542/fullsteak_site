@@ -1,8 +1,8 @@
 package server
 
 import (
-	"my_website/internal/handlers"
-	"my_website/internal/session"
+	"fullsteak/internal/handlers"
+	"fullsteak/internal/session"
 	"net/http"
 
 	"github.com/labstack/echo/v4"

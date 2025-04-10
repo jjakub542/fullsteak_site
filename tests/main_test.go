@@ -1,7 +1,7 @@
 package tests
 
 import (
-	"my_website/internal/database"
+	"fullsteak/internal/database"
 	"os"
 	"testing"
 

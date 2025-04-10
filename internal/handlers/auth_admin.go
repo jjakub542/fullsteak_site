@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"fmt"
-	"my_website/internal/domain"
-	"my_website/internal/session"
+	"fullsteak/internal/domain"
+	"fullsteak/internal/session"
 	"net/http"
 
 	"github.com/labstack/echo/v4"

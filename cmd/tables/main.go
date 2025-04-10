@@ -1,8 +1,8 @@
 package main
 
 import (
+	"fullsteak/internal/database"
 	"log"
-	"my_website/internal/database"
 
 	_ "github.com/joho/godotenv/autoload"
 )
