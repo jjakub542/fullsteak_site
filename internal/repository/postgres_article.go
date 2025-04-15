@@ -18,7 +18,8 @@ func NewArticleRepository(c *pgxpool.Pool) domain.ArticleRepository {
 
 func (p *postgresArticleRepository) GetAll() ([]domain.Article, error) {
 	var articles []domain.Article
-	sql := `SELECT * FROM articles ORDER BY created_at DESC;`
+	sql := `SELECT a.id, a.title, a.description, a.content,
+        a.created_at, a.updated_at, a.public FROM articles a ORDER BY created_at DESC;`
 	rows, err := p.db.Query(context.Background(), sql)
 	if err != nil {
 		return articles, err
@@ -55,7 +56,8 @@ func (p *postgresArticleRepository) GetCount() (int, error) {
 
 func (p *postgresArticleRepository) GetAllPublicBetween(limit int, offset int) ([]domain.Article, error) {
 	var articles []domain.Article
-	sql := `SELECT * FROM articles WHERE public=true ORDER BY created_at DESC LIMIT $1 OFFSET $2;`
+	sql := `SELECT a.id, a.title, a.description, a.content,
+        a.created_at, a.updated_at, a.public FROM articles a WHERE public=true ORDER BY created_at DESC LIMIT $1 OFFSET $2;`
 	rows, err := p.db.Query(context.Background(), sql, limit, offset)
 	if err != nil {
 		return articles, err
@@ -83,7 +85,8 @@ func (p *postgresArticleRepository) GetAllPublicBetween(limit int, offset int) (
 
 func (p *postgresArticleRepository) GetAllPublic() ([]domain.Article, error) {
 	var articles []domain.Article
-	sql := `SELECT * FROM articles WHERE public=true ORDER BY created_at DESC;`
+	sql := `SELECT a.id, a.title, a.description, a.content,
+        a.created_at, a.updated_at, a.public FROM articles a WHERE public=true ORDER BY created_at DESC;`
 	rows, err := p.db.Query(context.Background(), sql)
 	if err != nil {
 		return articles, err
@@ -111,7 +114,8 @@ func (p *postgresArticleRepository) GetAllPublic() ([]domain.Article, error) {
 
 func (p *postgresArticleRepository) GetOneById(id string) (*domain.Article, error) {
 	var article domain.Article
-	sql := `SELECT * FROM articles WHERE id=$1;`
+	sql := `SELECT a.id, a.title, a.description, a.content,
+        a.created_at, a.updated_at, a.public FROM articles a WHERE id=$1;`
 	err := p.db.QueryRow(context.Background(), sql, id).Scan(
 		&article.Id,
 		&article.Title,

@@ -93,6 +93,30 @@ func (h *Handler) ArticleAttachImage(c echo.Context) error {
 	return c.Redirect(http.StatusSeeOther, "/admin/articles/"+c.Param("article_id")+"/edit")
 }
 
+/*
+func (h *Handler) ArticleAttachCoverImage(c echo.Context) error {
+	filename := uuid.NewString() + ".png"
+	file, err := c.FormFile("file")
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad request")
+	}
+	src, err := file.Open()
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad request")
+	}
+	defer src.Close()
+	image := &domain.Image{Filename: filename}
+	err = image.Save(src)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad request")
+	}
+	err = h.Repository.Article.Attach(image, c.Param("article_id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
+	}
+	return c.Redirect(http.StatusSeeOther, "/admin/articles/"+c.Param("article_id")+"/edit")
+} */
+
 func (h *Handler) ArticleDeleteImage(c echo.Context) error {
 	filename := c.QueryParam("filename")
 	image := &domain.Image{Filename: filename}

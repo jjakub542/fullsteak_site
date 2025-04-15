@@ -22,9 +22,11 @@ func InitTables(db *pgxpool.Pool, path string) error {
 func DropTables(db *pgxpool.Pool) error {
 	var err error
 	_, err = db.Exec(context.Background(), `
-		DROP TABLE images;
-		DROP TABLE articles;
-		DROP TABLE users;
+        ALTER TABLE articles DROP CONSTRAINT IF EXISTS fk_cover_image;
+
+        DROP TABLE IF EXISTS images CASCADE;
+        DROP TABLE IF EXISTS articles CASCADE;
+        DROP TABLE IF EXISTS users CASCADE;
 	`)
 
 	if err != nil {

@@ -23,6 +23,7 @@ type Article struct {
 	UpdatedAt   time.Time `json:"updated_at"`
 	Public      bool      `json:"public"`
 	Images      []Image   `json:"images"`
+	CoverImage  *Image    `json:"cover_image"`
 }
 
 func (i *Image) Save(src multipart.File) error {

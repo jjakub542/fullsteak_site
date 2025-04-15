@@ -11,12 +11,13 @@ CREATE TABLE IF NOT EXISTS users(
 
 CREATE TABLE IF NOT EXISTS articles(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    title TEXT UNIQUE,
+    title TEXT,
     description TEXT, 
     content TEXT,
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now(),
-    public BOOLEAN
+    public BOOLEAN,
+    cover_image_id UUID
 );
 
 CREATE TABLE IF NOT EXISTS images(
@@ -26,3 +27,9 @@ CREATE TABLE IF NOT EXISTS images(
     article_id UUID,
     CONSTRAINT fk_article FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
 );
+
+ALTER TABLE articles
+ADD CONSTRAINT fk_cover_image
+FOREIGN KEY (cover_image_id)
+REFERENCES images(id)
+ON DELETE SET NULL;
