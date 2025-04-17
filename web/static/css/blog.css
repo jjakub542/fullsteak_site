@@ -1,31 +1,31 @@
 /* Blog Section */
 .blog {
   padding: 60px 20px;
-  background-color: #f4f4f4;
+  color: #f9f9f9;
 }
 
 .blog h1 {
   text-align: center;
   font-size: 36px;
   margin-bottom: 40px;
+  color: #ffffff;
 }
 
 /* Article Grid */
 .articles {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 20px;
+  grid-template-columns: 1fr;
+  gap: 30px;
   justify-items: center;
+  max-width: 1600px;
   margin: 0 auto 40px auto;
-  max-width: 1600px; /* 🧠 Max total width of the article grid */
   padding: 0 20px;
 }
 
 .article-card {
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #1a1a1a;
+  border: 1px solid #2a2a2a;
   border-radius: 8px;
-  overflow: hidden;
   width: 100%;
   max-width: 800px;
   text-align: center;
@@ -33,7 +33,7 @@
 }
 
 .article-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-8px);
 }
 
 .article-card img {
@@ -42,6 +42,7 @@
   object-fit: cover;
 }
 
+/* Content inside the card */
 .article-content {
   padding: 20px;
 }
@@ -49,23 +50,25 @@
 .article-content h2 {
   font-size: 22px;
   margin-bottom: 15px;
+  color: #ffffff;
 }
 
 .article-content p {
   font-size: 16px;
-  color: #666;
+  color: #ccc;
   margin-bottom: 20px;
 }
 
+/* Read more link */
 .read-more {
-  color: #008080;
+  color: #df1010;
   text-decoration: none;
   font-weight: 600;
-  transition: color 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .read-more:hover {
-  color: #00b8b8;
+  opacity: 0.8;
 }
 
 /* Pagination Styles */
@@ -73,62 +76,44 @@
   display: flex;
   justify-content: center;
   margin-top: 40px;
+  flex-wrap: wrap;
 }
 
-.pagination a:hover {
-  background-color: #007575;
+.pagination a {
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  color: #fff;
 }
 
 .pagination-button-active {
-  padding: 10px 20px;
-  margin: 0 5px;
-  background-color: #00b8b8;
-  color: #fff;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
+  background-color: #c73030;
 }
 
 .pagination-button-current {
-  padding: 10px 20px;
-  margin: 0 5px;
-  background-color: #007575;
-  color: #fff;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
+  background-color: #721616;
 }
 
 .pagination-button-disabled {
-  padding: 10px 20px;
-  margin: 0 5px;
-  background-color: #616161;
-  color: #fff;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
+  background-color: #444;
 }
 
 /* Responsive Layout */
-
-/* Small & Medium: 1 per row */
 @media (max-width: 768px) {
   .articles {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: 1fr;
   }
 }
 
-/* Large: 3 per row */
 @media (min-width: 1024px) and (max-width: 1440px) {
   .articles {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* Extra Large: 4 per row */
 @media (min-width: 1441px) {
   .articles {
     grid-template-columns: repeat(4, 1fr);

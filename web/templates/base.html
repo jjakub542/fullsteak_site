@@ -1,46 +1,78 @@
 {{ define "base.html" }}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FullSteak</title>
-  <link rel="stylesheet" href="/static/css/styles.css">
-  <link rel="stylesheet" href="/static/css/blog.css">
-  <link rel="stylesheet" href="/static/css/article.css">
+  <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/styles.css" />
+  <link rel="stylesheet" href="/static/css/blog.css" />
+  <link rel="stylesheet" href="/static/css/article.css" />
 </head>
 <body>
+<div class="body-wrapper">
 
-  <!-- Navbar -->
+  <!-- Pasek nawigacyjny -->
   <nav class="navbar">
     <div class="logo">
-      <a href="/">FullSteak</a>
+      <a href="/">
+        <img src="/static/img/logo.png" alt="Logo FullSteak" class="logo-img">
+        <span id="company-name" class="typing"></span>
+      </a>
     </div>
     <ul class="nav-links">
-      <a href="/#about"><li>About Us</li></a>
-      <a href="/#services"><li>Services</li></a>
-      <a href="/#contact"><li>Contact</li></a>
-      <a href="/portfolio"><li>Portfolio</li></a>
+      <a href="/#about"><li>O nas</li></a>
+      <a href="/#services"><li>Usługi</li></a>
+      <a href="/#contact"><li>Kontakt</li></a>
+      <!--<a href="/portfolio"><li>Portfolio</li></a>-->
       <a href="/blog"><li>Blog</li></a>
     </ul>
   </nav>
 
+  <div class="main-content">
+
   {{ template "content" .}}
 
-  <!-- Footer -->
+  </div>
+
+  <!-- Stopka -->
   <footer class="footer">
     <div class="footer-container">
-      <p>&copy; 2025 FullSteak. All rights reserved.</p>
+      <p>&copy; 2025 FullSteak. Wszelkie prawa zastrzeżone.</p>
       <ul class="footer-links">
-        <li><a href="#">Privacy</a></li>
-        <li><a href="#">Terms</a></li>
-        <li><a href="#">Support</a></li>
+        <li><a href="#">Prywatność</a></li>
+        <li><a href="#">Regulamin</a></li>
+        <li><a href="#">Wsparcie</a></li>
       </ul>
     </div>
   </footer>
 
+</div>
 </body>
 </html>
+
+<script>
+  const companyName = "FullSteak";
+  const element = document.getElementById("company-name");
+  let i = 0;
+
+  function typeWriter() {
+    if (i < companyName.length) {
+      element.textContent += companyName.charAt(i);
+      i++;
+      setTimeout(typeWriter, 150);
+    } else {
+      element.classList.remove("typing"); // remove blinking cursor
+    }
+  }
+
+  setTimeout(typeWriter, 500);
+</script>
 
 {{ end }}
