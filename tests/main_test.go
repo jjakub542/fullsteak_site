@@ -12,7 +12,7 @@ var TestDB *pgxpool.Pool
 
 func TestMain(m *testing.M) {
 	TestDB = database.ConnectTest()
-	database.InitTables(TestDB, "../internal/database/tables.sql")
+	database.InitTables(TestDB, "../tables.sql")
 
 	// Run tests
 	code := m.Run()

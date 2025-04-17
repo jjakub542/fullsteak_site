@@ -9,7 +9,7 @@ import (
 
 func main() {
 	db := database.Connect()
-	err := database.InitTables(db, "internal/database/tables.sql")
+	err := database.InitTables(db, "tables.sql")
 	if err != nil {
 		log.Fatal(err)
 	}
