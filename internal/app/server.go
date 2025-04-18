@@ -1,4 +1,4 @@
-package server
+package app
 
 import (
 	"fmt"
@@ -10,27 +10,36 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/joho/godotenv/autoload"
 
+	"fullsteak/internal/article"
 	"fullsteak/internal/database"
-	"fullsteak/internal/repository"
-	"fullsteak/internal/session"
+	"fullsteak/internal/user"
 )
+
+type Repository struct {
+	User    user.Repository
+	Article article.Repository
+}
 
 type Server struct {
 	port       int
 	db         *pgxpool.Pool
-	store      *session.Store
-	repository *repository.Repository
+	store      *user.SessionStore
+	repository *Repository
 }
 
 func NewServer() *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	db := database.Connect()
-	store := session.NewStore()
+	store := user.NewSessionStore()
+
 	NewServer := &Server{
-		port:       port,
-		db:         db,
-		store:      store,
-		repository: repository.New(db),
+		port:  port,
+		db:    db,
+		store: store,
+		repository: &Repository{
+			User:    user.NewRepository(db),
+			Article: article.NewRepository(db),
+		},
 	}
 
 	server := &http.Server{

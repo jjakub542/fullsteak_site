@@ -2,35 +2,34 @@ package tests
 
 import (
 	"fullsteak/internal/database"
-	"fullsteak/internal/domain"
-	"fullsteak/internal/repository"
+	"fullsteak/internal/user"
 	"testing"
 )
 
 func TestUserRepository(t *testing.T) {
 	var err error
 
-	user := &domain.User{
+	u := &user.User{
 		Email:       "jjakub2d33@gmail.com",
 		Password:    "123",
 		IsSuperuser: false,
 	}
 
-	user.CreatePasswordHash()
+	u.CreatePasswordHash()
 
-	repo := repository.New(TestDB)
-	err = repo.User.CreateOne(user)
+	repo := user.NewRepository(TestDB)
+	err = repo.CreateOne(u)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	user2, err := repo.User.GetOneByEmail(user.Email)
+	user2, err := repo.GetOneByEmail(u.Email)
 
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if user2.PasswordHash != user.PasswordHash {
+	if user2.PasswordHash != u.PasswordHash {
 		t.Fail()
 	}
 

@@ -1,4 +1,4 @@
-package session
+package user
 
 import (
 	"net/http"
@@ -9,7 +9,7 @@ import (
 
 const sessionCookieName = "session_id"
 
-func Middleware(store *Store) echo.MiddlewareFunc {
+func SessionMiddleware(store *SessionStore) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			req := c.Request()

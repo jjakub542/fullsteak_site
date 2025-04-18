@@ -1,15 +1,21 @@
-package handlers
+package admin
 
 import (
-	"fullsteak/internal/domain"
+	"fullsteak/internal/article"
+	"fullsteak/internal/user"
 	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
 
+type Handler struct {
+	User    user.Repository
+	Article article.Repository
+}
+
 func (h *Handler) AdminHomePage(c echo.Context) error {
-	articles, err := h.Repository.Article.GetAll()
+	articles, err := h.Article.GetAll()
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
@@ -21,12 +27,12 @@ func (h *Handler) AdminStatsPage(c echo.Context) error {
 }
 
 func (h *Handler) ArticleCreate(c echo.Context) error {
-	article := &domain.Article{
+	a := &article.Article{
 		Title:       c.FormValue("title"),
 		Description: c.FormValue("desc"),
 		Public:      false,
 	}
-	err := h.Repository.Article.CreateOne(article)
+	err := h.Article.CreateOne(a)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
@@ -34,7 +40,7 @@ func (h *Handler) ArticleCreate(c echo.Context) error {
 }
 
 func (h *Handler) ArticleDelete(c echo.Context) error {
-	images, err1 := h.Repository.Article.GetArticleImages(c.Param("article_id"))
+	images, err1 := h.Article.GetArticleImages(c.Param("article_id"))
 	if err1 != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
@@ -44,7 +50,7 @@ func (h *Handler) ArticleDelete(c echo.Context) error {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 		}
 	}
-	err2 := h.Repository.Article.DeleteOneById(c.Param("article_id"))
+	err2 := h.Article.DeleteOneById(c.Param("article_id"))
 	if err2 != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
@@ -52,17 +58,17 @@ func (h *Handler) ArticleDelete(c echo.Context) error {
 }
 
 func (h *Handler) ArticleUpdate(c echo.Context) error {
-	article := &domain.Article{
+	a := &article.Article{
 		Title:       c.FormValue("title"),
 		Description: c.FormValue("desc"),
 		Content:     c.FormValue("content"),
 	}
 	if c.FormValue("public") == "on" {
-		article.Public = true
+		a.Public = true
 	} else {
-		article.Public = false
+		a.Public = false
 	}
-	err := h.Repository.Article.UpdateOneById(article, c.Param("article_id"))
+	err := h.Article.UpdateOneById(a, c.Param("article_id"))
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
@@ -76,17 +82,17 @@ func (h *Handler) ArticleUpdate(c echo.Context) error {
 			return echo.NewHTTPError(http.StatusBadRequest, "Bad request")
 		}
 		defer src.Close()
-		newImageID, err := h.Repository.Article.AttachImage(c.Param("article_id"))
+		newImageID, err := h.Article.AttachImage(c.Param("article_id"))
 		if err != nil {
 			return c.String(http.StatusInternalServerError, "Error saving image metadata: "+err.Error())
 		}
-		image := &domain.Image{Id: newImageID}
-		err = image.Save(src)
+		i := &article.Image{Id: newImageID}
+		err = i.Save(src)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "Bad request")
 		}
 
-		err = h.Repository.Article.UpdateArticleCoverImage(c.Param("article_id"), newImageID)
+		err = h.Article.UpdateArticleCoverImage(c.Param("article_id"), newImageID)
 		if err != nil {
 			return c.String(http.StatusInternalServerError, "Error updating article's cover image: "+err.Error())
 		}
@@ -105,12 +111,12 @@ func (h *Handler) ArticleAttachImage(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad request")
 	}
 	defer src.Close()
-	newImageID, err := h.Repository.Article.AttachImage(c.Param("article_id"))
+	newImageID, err := h.Article.AttachImage(c.Param("article_id"))
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
-	image := &domain.Image{Id: newImageID}
-	err = image.Save(src)
+	i := &article.Image{Id: newImageID}
+	err = i.Save(src)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad request")
 	}
@@ -118,12 +124,12 @@ func (h *Handler) ArticleAttachImage(c echo.Context) error {
 }
 
 func (h *Handler) ArticleDeleteImage(c echo.Context) error {
-	image := &domain.Image{Id: c.QueryParam("id")}
-	err := image.Remove()
+	i := &article.Image{Id: c.QueryParam("id")}
+	err := i.Remove()
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
-	err = h.Repository.Article.RemoveImage(image.Id)
+	err = h.Article.RemoveImage(i.Id)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
@@ -131,15 +137,15 @@ func (h *Handler) ArticleDeleteImage(c echo.Context) error {
 }
 
 func (h *Handler) ArticleEditPage(c echo.Context) error {
-	article, err := h.Repository.Article.GetOneById(c.Param("article_id"))
+	a, err := h.Article.GetOneById(c.Param("article_id"))
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
-	images, err := h.Repository.Article.GetArticleImages(c.Param("article_id"))
+	images, err := h.Article.GetArticleImages(c.Param("article_id"))
 	if err != nil {
 		log.Fatal(err)
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
-	article.Images = append(article.Images, images...)
-	return c.Render(http.StatusOK, "admin/article.html", article)
+	a.Images = append(a.Images, images...)
+	return c.Render(http.StatusOK, "admin/article.html", a)
 }

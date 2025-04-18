@@ -1,17 +1,19 @@
-package handlers
+package user
 
 import (
 	"fmt"
-	"fullsteak/internal/domain"
-	"fullsteak/internal/session"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
 
+type Handler struct {
+	User Repository
+}
+
 func (h *Handler) LoginPage(c echo.Context) error {
 	sessionID := c.Get("sessionID").(string)
-	store := c.Get("sessionStore").(*session.Store)
+	store := c.Get("sessionStore").(*SessionStore)
 
 	if c.Request().Method == http.MethodGet {
 		role, ok := store.Get(sessionID, "role")
@@ -21,26 +23,26 @@ func (h *Handler) LoginPage(c echo.Context) error {
 		return c.Render(http.StatusOK, "admin/login.html", nil)
 	}
 
-	requestUser := domain.User{
+	requestUser := User{
 		Email:    c.FormValue("email"),
 		Password: c.FormValue("password"),
 	}
 
 	requestUser.CreatePasswordHash()
 
-	user, err := h.Repository.User.GetOneByEmail(c.FormValue("email"))
+	u, err := h.User.GetOneByEmail(c.FormValue("email"))
 
-	fmt.Println(user.Email)
+	fmt.Println(u.Email)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusUnauthorized, "User with this email does not exist")
 	}
 
-	if user.PasswordHash != requestUser.PasswordHash {
+	if u.PasswordHash != requestUser.PasswordHash {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Invalid password")
 	}
 
-	if !user.IsSuperuser {
+	if !u.IsSuperuser {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Unauthorized")
 	}
 
@@ -52,7 +54,7 @@ func (h *Handler) LoginPage(c echo.Context) error {
 
 func (h *Handler) LogoutPage(c echo.Context) error {
 	sessionID := c.Get("sessionID").(string)
-	store := c.Get("sessionStore").(*session.Store)
+	store := c.Get("sessionStore").(*SessionStore)
 
 	store.Delete(sessionID)
 	return c.Render(http.StatusOK, "admin/logout.html", nil)

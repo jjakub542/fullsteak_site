@@ -3,8 +3,7 @@ package main
 import (
 	"fmt"
 	"fullsteak/internal/database"
-	"fullsteak/internal/domain"
-	"fullsteak/internal/repository"
+	"fullsteak/internal/user"
 	"log"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -13,7 +12,7 @@ import (
 func main() {
 	db := database.Connect()
 	var err error
-	newUser := domain.User{IsSuperuser: true}
+	newUser := user.User{IsSuperuser: true}
 
 	fmt.Println("Email: ")
 	fmt.Scanln(&newUser.Email)
@@ -27,9 +26,9 @@ func main() {
 
 	newUser.CreatePasswordHash()
 
-	repo := repository.New(db)
+	repo := user.NewRepository(db)
 
-	err = repo.User.CreateOne(&newUser)
+	err = repo.CreateOne(&newUser)
 
 	if err != nil {
 		log.Fatal(err)

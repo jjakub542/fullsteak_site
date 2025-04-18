@@ -2,12 +2,11 @@ package main
 
 import (
 	"fmt"
-	"fullsteak/internal/server"
+	"fullsteak/internal/app"
 )
 
 func main() {
-
-	server := server.NewServer()
+	server := app.NewServer()
 
 	err := server.ListenAndServe()
 	if err != nil {

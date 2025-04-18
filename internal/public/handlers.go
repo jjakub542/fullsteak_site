@@ -1,11 +1,19 @@
-package handlers
+package public
 
 import (
 	"net/http"
 	"strconv"
 
+	"fullsteak/internal/article"
+	"fullsteak/internal/user"
+
 	"github.com/labstack/echo/v4"
 )
+
+type Handler struct {
+	User    user.Repository
+	Article article.Repository
+}
 
 func (h *Handler) HomePage(c echo.Context) error {
 	return c.Render(http.StatusOK, "home.html", nil)
@@ -22,11 +30,11 @@ func (h *Handler) BlogPage(c echo.Context) error {
 	}
 	limit := 8
 	offset := (page - 1) * limit
-	articles, err := h.Repository.Article.GetAllPublicBetween(limit, offset)
+	articles, err := h.Article.GetAllPublicBetween(limit, offset)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
-	count, err := h.Repository.Article.GetCount()
+	count, err := h.Article.GetCount()
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
@@ -44,7 +52,7 @@ func (h *Handler) BlogPage(c echo.Context) error {
 
 func (h *Handler) ArticleView(c echo.Context) error {
 	id := c.Param("article_id")
-	article, err := h.Repository.Article.GetOneById(id)
+	article, err := h.Article.GetOneById(id)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}

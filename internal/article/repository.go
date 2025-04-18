@@ -1,9 +1,8 @@
-package repository
+package article
 
 import (
 	"context"
 	"fmt"
-	"fullsteak/internal/domain"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -13,12 +12,12 @@ type postgresArticleRepository struct {
 	db *pgxpool.Pool
 }
 
-func NewArticleRepository(c *pgxpool.Pool) domain.ArticleRepository {
+func NewRepository(c *pgxpool.Pool) Repository {
 	return &postgresArticleRepository{db: c}
 }
 
-func (p *postgresArticleRepository) GetAll() ([]domain.Article, error) {
-	var articles []domain.Article
+func (p *postgresArticleRepository) GetAll() ([]Article, error) {
+	var articles []Article
 	sql := `SELECT a.id, a.title, a.description, a.content,
         a.created_at, a.updated_at, a.public FROM articles a ORDER BY created_at DESC;`
 	rows, err := p.db.Query(context.Background(), sql)
@@ -26,7 +25,7 @@ func (p *postgresArticleRepository) GetAll() ([]domain.Article, error) {
 		return articles, err
 	}
 	for rows.Next() {
-		var article domain.Article
+		var article Article
 		if err := rows.Scan(
 			&article.Id,
 			&article.Title,
@@ -55,8 +54,8 @@ func (p *postgresArticleRepository) GetCount() (int, error) {
 	return count, nil
 }
 
-func (p *postgresArticleRepository) GetAllPublicBetween(limit int, offset int) ([]domain.Article, error) {
-	var articles []domain.Article
+func (p *postgresArticleRepository) GetAllPublicBetween(limit int, offset int) ([]Article, error) {
+	var articles []Article
 	sql := `SELECT a.id, a.title, a.description, a.content,
         a.created_at, a.updated_at, a.public, a.cover_image_id FROM articles a LEFT JOIN images i ON a.cover_image_id = i.id WHERE public=true ORDER BY created_at DESC LIMIT $1 OFFSET $2;`
 	rows, err := p.db.Query(context.Background(), sql, limit, offset)
@@ -65,7 +64,7 @@ func (p *postgresArticleRepository) GetAllPublicBetween(limit int, offset int) (
 	}
 	defer rows.Close()
 	for rows.Next() {
-		var article domain.Article
+		var article Article
 		if err := rows.Scan(
 			&article.Id,
 			&article.Title,
@@ -86,8 +85,8 @@ func (p *postgresArticleRepository) GetAllPublicBetween(limit int, offset int) (
 	return articles, nil
 }
 
-func (p *postgresArticleRepository) GetAllPublic() ([]domain.Article, error) {
-	var articles []domain.Article
+func (p *postgresArticleRepository) GetAllPublic() ([]Article, error) {
+	var articles []Article
 	sql := `SELECT a.id, a.title, a.description, a.content,
         a.created_at, a.updated_at, a.public FROM articles a WHERE public=true ORDER BY created_at DESC;`
 	rows, err := p.db.Query(context.Background(), sql)
@@ -95,7 +94,7 @@ func (p *postgresArticleRepository) GetAllPublic() ([]domain.Article, error) {
 		return articles, err
 	}
 	for rows.Next() {
-		var article domain.Article
+		var article Article
 		if err := rows.Scan(
 			&article.Id,
 			&article.Title,
@@ -115,8 +114,8 @@ func (p *postgresArticleRepository) GetAllPublic() ([]domain.Article, error) {
 	return articles, nil
 }
 
-func (p *postgresArticleRepository) GetOneById(id string) (*domain.Article, error) {
-	var article domain.Article
+func (p *postgresArticleRepository) GetOneById(id string) (*Article, error) {
+	var article Article
 	sql := `SELECT a.id, a.title, a.description, a.content,
         a.created_at, a.updated_at, a.public FROM articles a WHERE id=$1;`
 	err := p.db.QueryRow(context.Background(), sql, id).Scan(
@@ -131,14 +130,14 @@ func (p *postgresArticleRepository) GetOneById(id string) (*domain.Article, erro
 	return &article, err
 }
 
-func (p *postgresArticleRepository) CreateOne(a *domain.Article) error {
+func (p *postgresArticleRepository) CreateOne(a *Article) error {
 	sql := `INSERT INTO articles (title, description, content, public)
 	VALUES ($1, $2, $3, $4)`
 	_, err := p.db.Exec(context.Background(), sql, a.Title, a.Description, a.Content, a.Public)
 	return err
 }
 
-func (p *postgresArticleRepository) UpdateOneById(a *domain.Article, id string) error {
+func (p *postgresArticleRepository) UpdateOneById(a *Article, id string) error {
 	sql := `UPDATE articles SET
 	title=$1, description=$2, content=$3, updated_at=$4, public=$5
 	WHERE id=$6`
@@ -166,15 +165,15 @@ func (p *postgresArticleRepository) RemoveImage(filename string) error {
 	return err
 }
 
-func (p *postgresArticleRepository) GetArticleImages(article_id string) ([]domain.Image, error) {
-	var images []domain.Image
+func (p *postgresArticleRepository) GetArticleImages(article_id string) ([]Image, error) {
+	var images []Image
 	sql := `SELECT * FROM images WHERE article_id=$1`
 	rows, err := p.db.Query(context.Background(), sql, article_id)
 	if err != nil {
 		return images, err
 	}
 	for rows.Next() {
-		var image domain.Image
+		var image Image
 		if err := rows.Scan(
 			&image.Id,
 			&image.UploadedAt,

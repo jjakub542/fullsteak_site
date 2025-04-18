@@ -1,4 +1,4 @@
-package domain
+package user
 
 import (
 	"crypto/sha256"
@@ -34,7 +34,7 @@ func (u *User) CreatePasswordHash() {
 	u.PasswordHash = hex.EncodeToString(hashed_password.Sum(nil))
 }
 
-type UserRepository interface {
+type Repository interface {
 	GetAll() ([]User, error)
 	GetOneById(string) (*User, error)
 	GetOneByEmail(string) (*User, error)

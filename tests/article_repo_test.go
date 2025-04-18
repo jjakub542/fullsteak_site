@@ -1,48 +1,47 @@
 package tests
 
 import (
-	"fullsteak/internal/domain"
-	"fullsteak/internal/repository"
+	"fullsteak/internal/article"
 	"testing"
 )
 
 func TestArticleCreateOne(t *testing.T) {
 	var err error
 
-	article := &domain.Article{
+	a := &article.Article{
 		Title:       "tytuł artykułu",
 		Description: "streszczenie/opis",
 		Content:     "Writing a custom session middleware in Go Echo involves intercepting requests to handle session creation, validation, and management. Below is a complete guide to creating a basic custom session middleware.",
 		Public:      true,
 	}
 
-	repo := repository.New(TestDB)
-	err = repo.Article.CreateOne(article)
+	repo := article.NewRepository(TestDB)
+	err = repo.CreateOne(a)
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestArticleGetAll(t *testing.T) {
-	repo := repository.New(TestDB)
-	articles, err := repo.Article.GetAll()
+	repo := article.NewRepository(TestDB)
+	articles, err := repo.GetAll()
 	if err != nil {
 		t.Fatal(err)
 	}
 	if articles[0].Title != "tytuł artykułu" {
 		t.Fail()
 	}
-	article2 := &domain.Article{
+	article2 := &article.Article{
 		Title:       "tytuł artykułu po aktualizacji",
 		Description: "streszczenie/opis",
 		Content:     "Writing a custom session middleware in Go Echo involves intercepting requests to handle session creation, validation, and management. Below is a complete guide to creating a basic custom session middleware.",
 		Public:      true,
 	}
-	err = repo.Article.UpdateOneById(article2, articles[0].Id)
+	err = repo.UpdateOneById(article2, articles[0].Id)
 	if err != nil {
 		t.Fatal(err)
 	}
-	articleFinal, err := repo.Article.GetOneById(articles[0].Id)
+	articleFinal, err := repo.GetOneById(articles[0].Id)
 	if err != nil {
 		t.Fatal(err)
 	}

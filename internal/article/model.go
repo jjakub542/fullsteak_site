@@ -1,4 +1,4 @@
-package domain
+package article
 
 import (
 	"io"
@@ -51,7 +51,7 @@ func (i *Image) GetUrl() string {
 	return "/static/uploads/" + i.Id + ".png"
 }
 
-type ArticleRepository interface {
+type Repository interface {
 	GetAll() ([]Article, error)
 	GetAllPublic() ([]Article, error)
 	GetAllPublicBetween(int, int) ([]Article, error)
