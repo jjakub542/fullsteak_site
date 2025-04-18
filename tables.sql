@@ -22,7 +22,6 @@ CREATE TABLE IF NOT EXISTS articles(
 
 CREATE TABLE IF NOT EXISTS images(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    filename TEXT,
     uploaded_at TIMESTAMP DEFAULT now(),
     article_id UUID,
     CONSTRAINT fk_article FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE

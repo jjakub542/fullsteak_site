@@ -4,7 +4,7 @@
   <div class="col s10 m10 l5 offset-s1 offset-m1">
       <div class="container">
       <div class="row" style="margin-top: 40px;">
-          <form class="col s12 center-align" style="margin: 8px; color:black" action="/admin/articles/{{ .Id }}/update" method="post">
+          <form class="col s12 center-align" style="margin: 8px; color:black" action="/admin/articles/{{ .Id }}/update" method="post" enctype="multipart/form-data">
               <span style="font-size: xx-large;">Edit article</span>
               <div class="row" style="margin-top: 20px;">
                 <div class="input-field col s6">
@@ -19,7 +19,7 @@
                 </div>
                 <div class="input-field col s4 offset-s2">
                   <label class="center-align">
-                    <label for="cover_image">Cover Image (optional):</label>
+                    <label for="cover_image">Update Cover Image:</label>
                     <input type="file" name="cover_image" id="cover_image" accept="image/*"><br><br>
                   </label>
                 </div>
@@ -100,11 +100,11 @@
 
     <div class="row" id="image-grid">
         {{ range $Image := .Images }}
-        <div class="col s12 m12 l4" id="{{ $Image.Filename }}">
+        <div class="col s12 m12 l4" id="{{ $Image.Id }}">
           <div class="card">
               <div class="card-image">
-                <img style="cursor: pointer;" onclick="copyMarkdownScript('{{ $Image.Filename }}')" class="responsive-img" src="/static/uploads/{{ $Image.Filename }}">
-                  <button onclick="deleteImage('{{ $Image.Filename }}')" class="btn-floating btn-small waves-effect waves-light red delete-btn"><i class="material-icons">delete</i></button>
+                <img style="cursor: pointer;" onclick="copyMarkdownScript('{{ $Image.Id }}')" class="responsive-img" src="/static/uploads/{{ $Image.Id }}">
+                  <button onclick="deleteImage('{{ $Image.Id }}')" class="btn-floating btn-small waves-effect waves-light red delete-btn"><i class="material-icons">delete</i></button>
               </div>
           </div>
       </div>

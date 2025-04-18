@@ -31,6 +31,7 @@ func (h *Handler) BlogPage(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 	pagesCount := count/limit + 1
+
 	return c.Render(http.StatusOK, "blog.html", map[string]interface{}{
 		"articles":      articles,
 		"articlesCount": count,

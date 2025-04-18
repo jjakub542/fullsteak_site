@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"fullsteak/internal/domain"
 	"time"
 
@@ -57,11 +58,12 @@ func (p *postgresArticleRepository) GetCount() (int, error) {
 func (p *postgresArticleRepository) GetAllPublicBetween(limit int, offset int) ([]domain.Article, error) {
 	var articles []domain.Article
 	sql := `SELECT a.id, a.title, a.description, a.content,
-        a.created_at, a.updated_at, a.public FROM articles a WHERE public=true ORDER BY created_at DESC LIMIT $1 OFFSET $2;`
+        a.created_at, a.updated_at, a.public, a.cover_image_id FROM articles a LEFT JOIN images i ON a.cover_image_id = i.id WHERE public=true ORDER BY created_at DESC LIMIT $1 OFFSET $2;`
 	rows, err := p.db.Query(context.Background(), sql, limit, offset)
 	if err != nil {
 		return articles, err
 	}
+	defer rows.Close()
 	for rows.Next() {
 		var article domain.Article
 		if err := rows.Scan(
@@ -72,6 +74,7 @@ func (p *postgresArticleRepository) GetAllPublicBetween(limit int, offset int) (
 			&article.CreatedAt,
 			&article.UpdatedAt,
 			&article.Public,
+			&article.CoverImageName,
 		); err != nil {
 			return articles, err
 		}
@@ -149,15 +152,16 @@ func (p *postgresArticleRepository) DeleteOneById(id string) error {
 	return err
 }
 
-func (p *postgresArticleRepository) AttachImage(image *domain.Image, article_id string) error {
-	sql := `INSERT INTO images (filename, article_id) VALUES ($1, $2)`
-	_, err := p.db.Exec(context.Background(), sql, image.Filename, article_id)
-	return err
+func (p *postgresArticleRepository) AttachImage(article_id string) (string, error) {
+	var newImageID string
+	sql := `INSERT INTO images (article_id) VALUES ($1) RETURNING id`
+	err := p.db.QueryRow(context.Background(), sql, article_id).Scan(&newImageID)
+	return newImageID, err
 }
 
 func (p *postgresArticleRepository) RemoveImage(filename string) error {
 	// filename should be indexed !!!
-	sql := `DELETE FROM images WHERE filename=$1`
+	sql := `DELETE FROM images WHERE id=$1`
 	_, err := p.db.Exec(context.Background(), sql, filename)
 	return err
 }
@@ -173,7 +177,6 @@ func (p *postgresArticleRepository) GetArticleImages(article_id string) ([]domai
 		var image domain.Image
 		if err := rows.Scan(
 			&image.Id,
-			&image.Filename,
 			&image.UploadedAt,
 			&image.ArticleId,
 		); err != nil {
@@ -185,4 +188,12 @@ func (p *postgresArticleRepository) GetArticleImages(article_id string) ([]domai
 		return images, err
 	}
 	return images, nil
+}
+
+func (p *postgresArticleRepository) UpdateArticleCoverImage(article_id string, image_id string) error {
+	fmt.Println("\n" + article_id + "\n")
+	fmt.Println("\n" + image_id + "\n")
+	sql := `UPDATE articles SET cover_image_id = $1 WHERE id = $2`
+	_, err := p.db.Exec(context.Background(), sql, image_id, article_id)
+	return err
 }

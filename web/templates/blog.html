@@ -10,7 +10,7 @@
       {{ range .articles }}
 
       <div class="article-card">
-        <img src="/static/img/sample.jpg" alt="Article Image">
+        <img src="/static/uploads/{{ .CoverImageName }}.png" alt="Article Image">
         <div class="article-content">
           <h2>{{ .Title }}</h2>
           <p>{{ .Description }}</p>
@@ -66,7 +66,7 @@
 
   if (articlesCount === 0) {
     pagination.innerHTML = ''
-    document.getElementById("header").innerText = "No articles yet"
+    document.getElementById("header").innerText = "Brak artykułów"
   }
 
   if (pagesCount === 1) {
