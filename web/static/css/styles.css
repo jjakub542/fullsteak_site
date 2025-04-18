@@ -436,6 +436,10 @@ a {
     text-align: left !important;
   }
 
+  .slogan {
+    margin-left: 0px;
+  }
+  
 }
 
 @media (min-width: 1366px) {

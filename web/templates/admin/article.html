@@ -103,7 +103,7 @@
         <div class="col s12 m12 l4" id="{{ $Image.Id }}">
           <div class="card">
               <div class="card-image">
-                <img style="cursor: pointer;" onclick="copyMarkdownScript('{{ $Image.Id }}')" class="responsive-img" src="/static/uploads/{{ $Image.Id }}">
+                <img style="cursor: pointer;" onclick="copyMarkdownScript('{{ $Image.Id }}')" class="responsive-img" src="/static/uploads/{{ $Image.Id }}.png">
                   <button onclick="deleteImage('{{ $Image.Id }}')" class="btn-floating btn-small waves-effect waves-light red delete-btn"><i class="material-icons">delete</i></button>
               </div>
           </div>
@@ -122,10 +122,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.2/markdown-it.min.js"></script>
 <script>
 
-async function deleteImage(filename) {
+async function deleteImage(id) {
   const url = "https://example.org/products.json";
   try {
-    const response = await fetch("/admin/articles/delete-image?filename="+filename, {method: "POST"} );
+    const response = await fetch("/admin/articles/delete-image?id="+id, {method: "POST"} );
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
@@ -137,7 +137,7 @@ async function deleteImage(filename) {
 }
 
 function copyMarkdownScript(imageName) {
-  const text = `![img](/static/uploads/${imageName})`;
+  const text = `![img](/static/uploads/${imageName}.png)`;
   navigator.clipboard.writeText(text);
   alert("Copied to clipboard: " + text);
 }

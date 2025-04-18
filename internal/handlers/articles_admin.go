@@ -118,7 +118,7 @@ func (h *Handler) ArticleAttachImage(c echo.Context) error {
 }
 
 func (h *Handler) ArticleDeleteImage(c echo.Context) error {
-	image := &domain.Image{}
+	image := &domain.Image{Id: c.QueryParam("id")}
 	err := image.Remove()
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
