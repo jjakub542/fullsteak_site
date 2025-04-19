@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"fullsteak/internal/article"
+	"fullsteak/internal/contact"
 	"fullsteak/internal/user"
 
 	"github.com/labstack/echo/v4"
@@ -13,6 +14,7 @@ import (
 type Handler struct {
 	User    user.Repository
 	Article article.Repository
+	Contact contact.Repository
 }
 
 func (h *Handler) HomePage(c echo.Context) error {
@@ -39,7 +41,6 @@ func (h *Handler) BlogPage(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 	pagesCount := count/limit + 1
-
 	return c.Render(http.StatusOK, "blog.html", map[string]interface{}{
 		"articles":      articles,
 		"articlesCount": count,
@@ -57,4 +58,17 @@ func (h *Handler) ArticleView(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 	return c.Render(http.StatusOK, "article.html", article)
+}
+
+func (h *Handler) ContactUsPost(c echo.Context) error {
+	msg := &contact.MessageForm{
+		Name:    c.FormValue("name"),
+		Email:   c.FormValue("email"),
+		Message: c.FormValue("message"),
+	}
+	err := h.Contact.CreateOne(msg)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+	return c.Redirect(http.StatusSeeOther, "/#contact")
 }

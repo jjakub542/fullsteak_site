@@ -100,10 +100,10 @@
     <p>Napisz do nas lub zostaw wiadomość przez formularz poniżej.</p>
     
   <!-- Formularz -->
-  <form>
-      <input type="text" placeholder="Twoje Imię" required>
-      <input type="email" placeholder="Twój Email" required>
-      <textarea placeholder="Twoja Wiadomość" rows="5" required></textarea>
+  <form method="POST" action="/send-message">
+      <input type="text" name="name" placeholder="Twoje Imię" required>
+      <input type="email" name="email" placeholder="Twój Email" required>
+      <textarea placeholder="Twoja Wiadomość" name="message" rows="5" required></textarea>
       <button type="submit" class="cta-button">
         📩 Wyślij Wiadomość
       </button>

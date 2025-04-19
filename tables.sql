@@ -9,6 +9,14 @@ CREATE TABLE IF NOT EXISTS users(
     is_superuser BOOLEAN
 );
 
+CREATE TABLE IF NOT EXISTS messages(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT,
+    email TEXT,
+    message TEXT,
+    created_at TIMESTAMP DEFAULT now()
+);
+
 CREATE TABLE IF NOT EXISTS articles(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title TEXT,

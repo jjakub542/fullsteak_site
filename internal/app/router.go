@@ -18,8 +18,7 @@ func (s *Server) Router() http.Handler {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	//h := handlers.Handler{Repository: s.repository}
-	publicHandler := public.Handler{User: s.repository.User, Article: s.repository.Article}
+	publicHandler := public.Handler{User: s.repository.User, Article: s.repository.Article, Contact: s.repository.Contact}
 	adminHandler := admin.Handler{User: s.repository.User, Article: s.repository.Article}
 	userHandler := user.Handler{User: s.repository.User}
 
@@ -27,6 +26,7 @@ func (s *Server) Router() http.Handler {
 	e.GET("/portfolio", publicHandler.PortfolioPage)
 	e.GET("/blog", publicHandler.BlogPage)
 	e.GET("/blog/:article_id", publicHandler.ArticleView)
+	e.POST("/send-message", publicHandler.ContactUsPost)
 
 	adminGroup := e.Group("/admin")
 	adminGroup.GET("/statistics", user.AdminAuth(adminHandler.AdminStatsPage))

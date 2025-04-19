@@ -11,6 +11,7 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 
 	"fullsteak/internal/article"
+	"fullsteak/internal/contact"
 	"fullsteak/internal/database"
 	"fullsteak/internal/user"
 )
@@ -18,6 +19,7 @@ import (
 type Repository struct {
 	User    user.Repository
 	Article article.Repository
+	Contact contact.Repository
 }
 
 type Server struct {
@@ -39,6 +41,7 @@ func NewServer() *http.Server {
 		repository: &Repository{
 			User:    user.NewRepository(db),
 			Article: article.NewRepository(db),
+			Contact: contact.NewRepository(db),
 		},
 	}
 
