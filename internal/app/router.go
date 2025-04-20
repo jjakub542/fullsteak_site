@@ -2,6 +2,7 @@ package app
 
 import (
 	"fullsteak/internal/admin"
+	"fullsteak/internal/contact"
 	"fullsteak/internal/public"
 	"fullsteak/internal/user"
 	"net/http"
@@ -26,16 +27,19 @@ func (s *Server) Router() http.Handler {
 	publicHandler := public.Handler{User: s.repository.User, Article: s.repository.Article, Contact: s.repository.Contact}
 	adminHandler := admin.Handler{User: s.repository.User, Article: s.repository.Article, Contact: s.repository.Contact}
 	userHandler := user.Handler{User: s.repository.User}
+	contactHandler := contact.Handler{Contact: s.repository.Contact}
 
 	e.GET("/", publicHandler.HomePage)
 	e.GET("/portfolio", publicHandler.PortfolioPage)
 	e.GET("/blog", publicHandler.BlogPage)
 	e.GET("/blog/:article_id", publicHandler.ArticleView)
 	e.POST("/send-message", publicHandler.ContactUsPost)
+	e.POST("/messages", contactHandler.MessageCreate)
 
 	adminGroup := e.Group("/admin")
 	adminGroup.GET("", user.AdminAuth(adminHandler.HomePage))
 	adminGroup.GET("/messages", user.AdminAuth(adminHandler.MessagesPage))
+	adminGroup.DELETE("/messages/:id", user.AdminAuth(contactHandler.MessageDelete))
 	adminGroup.GET("/statistics", user.AdminAuth(adminHandler.StatsPage))
 	adminGroup.GET("/articles", user.AdminAuth(adminHandler.ArticlesPage))
 	adminGroup.POST("/articles/create", user.AdminAuth(adminHandler.ArticleCreate))

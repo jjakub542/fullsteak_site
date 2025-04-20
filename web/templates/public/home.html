@@ -100,7 +100,7 @@
     <p>Napisz do nas lub zostaw wiadomość przez formularz poniżej.</p>
     
   <!-- Formularz -->
-  <form method="POST" action="/send-message">
+  <form>
     <input type="hidden" name="_csrf" value="{{ .CSRFToken }}">
       <input type="text" name="name" placeholder="Twoje Imię" required>
       <input type="email" name="email" placeholder="Twój Email" required>
@@ -113,6 +113,50 @@
 
 </section>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector("form");
+  const submitButton = form.querySelector("button");
 
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault(); // Stop the normal form submission
+
+    // Grab data from the form
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const message = form.message.value.trim();
+    const csrfToken = form.querySelector('input[name="_csrf"]').value;
+
+    // Optional: disable button to prevent double submission
+    submitButton.disabled = true;
+    submitButton.textContent = "⏳ Wysyłanie...";
+
+    try {
+      const response = await fetch("/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken
+        },
+        body: JSON.stringify({ name, email, message })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Wystąpił błąd.");
+      }
+
+      // Optionally reset the form and show success
+      form.reset();
+      alert("✅ Wiadomość została wysłana!");
+    } catch (error) {
+      alert("❌ Błąd: " + error.message);
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = "📩 Wyślij Wiadomość";
+    }
+  });
+});
+</script>
 
 {{ end }}
