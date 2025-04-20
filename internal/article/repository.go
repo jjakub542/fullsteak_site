@@ -2,6 +2,7 @@ package article
 
 import (
 	"context"
+	psql "database/sql"
 	"fmt"
 	"time"
 
@@ -64,6 +65,7 @@ func (p *postgresArticleRepository) GetAllPublicBetween(limit int, offset int) (
 	}
 	defer rows.Close()
 	for rows.Next() {
+		var coverImgId psql.NullString
 		var article Article
 		if err := rows.Scan(
 			&article.Id,
@@ -73,9 +75,14 @@ func (p *postgresArticleRepository) GetAllPublicBetween(limit int, offset int) (
 			&article.CreatedAt,
 			&article.UpdatedAt,
 			&article.Public,
-			&article.CoverImageName,
+			&coverImgId,
 		); err != nil {
 			return articles, err
+		}
+		if coverImgId.Valid {
+			article.CoverImageId = &coverImgId.String
+		} else {
+			article.CoverImageId = nil
 		}
 		articles = append(articles, article)
 	}
