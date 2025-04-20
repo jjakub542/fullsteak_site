@@ -101,6 +101,7 @@
     
   <!-- Formularz -->
   <form method="POST" action="/send-message">
+    <input type="hidden" name="_csrf" value="{{ .CSRFToken }}">
       <input type="text" name="name" placeholder="Twoje Imię" required>
       <input type="email" name="email" placeholder="Twój Email" required>
       <textarea placeholder="Twoja Wiadomość" name="message" rows="5" required></textarea>

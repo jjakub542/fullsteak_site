@@ -24,9 +24,23 @@ func (h *Handler) StatsPage(c echo.Context) error {
 }
 
 func (h *Handler) MessagesPage(c echo.Context) error {
+	csrfToken := c.Get("csrf").(string)
 	messages, err := h.Contact.GetAll()
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
-	return c.Render(http.StatusOK, "admin/messages.html", messages)
+	return c.Render(http.StatusOK, "admin/messages.html", map[string]interface{}{
+		"Count":     len(messages),
+		"Messages":  messages,
+		"CSRFToken": csrfToken,
+	})
+}
+
+func (h *Handler) MessagesDelete(c echo.Context) error {
+	id := c.FormValue("message_id")
+	err := h.Contact.DeleteOneById(id)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
+	}
+	return c.Redirect(http.StatusSeeOther, "/admin/messages")
 }

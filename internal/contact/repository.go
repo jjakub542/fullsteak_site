@@ -20,6 +20,12 @@ func (p *postgresMessageFormRepository) CreateOne(c *MessageForm) error {
 	return err
 }
 
+func (p *postgresMessageFormRepository) DeleteOneById(id string) error {
+	sql := `DELETE FROM messages WHERE id=$1`
+	_, err := p.db.Exec(context.Background(), sql, id)
+	return err
+}
+
 func (p *postgresMessageFormRepository) GetAll() ([]MessageForm, error) {
 	var msgs []MessageForm
 	sql := `SELECT m.id, m.name, m.email, m.message,

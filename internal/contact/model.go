@@ -26,4 +26,5 @@ func (u *MessageForm) Validate() error {
 type Repository interface {
 	CreateOne(*MessageForm) error
 	GetAll() ([]MessageForm, error)
+	DeleteOneById(string) error
 }

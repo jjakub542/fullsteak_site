@@ -18,8 +18,10 @@ type Handler struct {
 }
 
 func (h *Handler) HomePage(c echo.Context) error {
+	csrfToken := c.Get("csrf").(string)
 	return c.Render(http.StatusOK, "home.html", map[string]interface{}{
 		"PageTitle": "Home",
+		"CSRFToken": csrfToken,
 	})
 }
 
@@ -45,7 +47,7 @@ func (h *Handler) BlogPage(c echo.Context) error {
 	pagesCount := count/limit + 1
 	return c.Render(http.StatusOK, "blog.html", map[string]interface{}{
 		"PageTitle":     "Blog",
-		"articles":      articles,
+		"Articles":      articles,
 		"articlesCount": count,
 		"pagesCount":    pagesCount,
 		"page":          page,
@@ -62,7 +64,7 @@ func (h *Handler) ArticleView(c echo.Context) error {
 	}
 	return c.Render(http.StatusOK, "article.html", map[string]interface{}{
 		"PageTitle": a.Title,
-		"article":   a,
+		"Article":   a,
 	})
 }
 

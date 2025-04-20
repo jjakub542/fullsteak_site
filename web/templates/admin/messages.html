@@ -1,7 +1,8 @@
 {{ define "content" }}
 
+<h2 style="margin-left: 26px;" id="msg">Latest messages</h2>
 <div class="message-list">
-{{ range .}}
+{{ range .Messages }}
 <div class="message-card">
   <div class="message-header">
     <span><strong>ID:</strong> {{ .Id }}</span>
@@ -25,6 +26,9 @@
 </div>
 
 <script>
+  if ('{{ .Count }}' === "0") {
+    document.getElementById("msg").innerText = "No messages yet"
+  }
   function getCSRFTokenFromCookie() {
   return document.cookie.split('; ').find(row => row.startsWith('_csrf=')).split('=')[1];
 }
