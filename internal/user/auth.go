@@ -10,8 +10,6 @@ func AdminAuth(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		sessionID := c.Get("sessionID").(string)
 		store := c.Get("sessionStore").(*SessionStore)
-
-		return next(c)
 		role, ok := store.Get(sessionID, "role")
 		if !ok || role != "admin" {
 			return c.JSON(http.StatusForbidden, map[string]string{"error": "Access forbidden: Admin only"})
