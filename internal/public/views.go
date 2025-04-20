@@ -18,7 +18,9 @@ type Handler struct {
 }
 
 func (h *Handler) HomePage(c echo.Context) error {
-	return c.Render(http.StatusOK, "home.html", nil)
+	return c.Render(http.StatusOK, "home.html", map[string]interface{}{
+		"PageTitle": "Home",
+	})
 }
 
 func (h *Handler) PortfolioPage(c echo.Context) error {
@@ -42,6 +44,7 @@ func (h *Handler) BlogPage(c echo.Context) error {
 	}
 	pagesCount := count/limit + 1
 	return c.Render(http.StatusOK, "blog.html", map[string]interface{}{
+		"PageTitle":     "Blog",
 		"articles":      articles,
 		"articlesCount": count,
 		"pagesCount":    pagesCount,
@@ -53,11 +56,14 @@ func (h *Handler) BlogPage(c echo.Context) error {
 
 func (h *Handler) ArticleView(c echo.Context) error {
 	id := c.Param("article_id")
-	article, err := h.Article.GetOneById(id)
+	a, err := h.Article.GetOneById(id)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
-	return c.Render(http.StatusOK, "article.html", article)
+	return c.Render(http.StatusOK, "article.html", map[string]interface{}{
+		"PageTitle": a.Title,
+		"article":   a,
+	})
 }
 
 func (h *Handler) ContactUsPost(c echo.Context) error {

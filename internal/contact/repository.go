@@ -23,7 +23,7 @@ func (p *postgresMessageFormRepository) CreateOne(c *MessageForm) error {
 func (p *postgresMessageFormRepository) GetAll() ([]MessageForm, error) {
 	var msgs []MessageForm
 	sql := `SELECT m.id, m.name, m.email, m.message,
-        m.created_at FROM messages a ORDER BY created_at DESC;`
+        m.created_at FROM messages m ORDER BY created_at DESC;`
 	rows, err := p.db.Query(context.Background(), sql)
 	if err != nil {
 		return msgs, err

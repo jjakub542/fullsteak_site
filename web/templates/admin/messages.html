@@ -1,0 +1,62 @@
+{{ define "content" }}
+
+<div class="message-list">
+{{ range .}}
+<div class="message-card">
+  <div class="message-header">
+    <span><strong>ID:</strong> {{ .Id }}</span>
+    <span>{{ .CreatedAt }}</span>
+  </div>
+
+  <div><strong>Name:</strong> {{ .Name }}</div>
+  <div><strong>Email:</strong> {{ .Email }}</div>
+
+  <div class="message-body">
+    <div class="message-preview" title="{{ .Message }}">
+      <strong>Message:</strong> {{ .Message }}
+    </div>
+    <div class="message-actions">
+      <button onclick="copyMessage(this)" data-full="{{ .Message }}" title="Copy full message">📋</button>
+      <button onclick="deleteMessage('{{ .Id }}')" title="Delete message">🗑️</button>
+    </div>
+  </div>
+</div>
+{{ end }}
+</div>
+
+<script>
+  function getCSRFTokenFromCookie() {
+  return document.cookie.split('; ').find(row => row.startsWith('_csrf=')).split('=')[1];
+}
+  function copyMessage(button) {
+    const fullMessage = button.getAttribute("data-full");
+    navigator.clipboard.writeText(fullMessage).then(() => {
+      alert("Message copied to clipboard!");
+    }).catch(err => {
+      console.error("Failed to copy", err);
+    });
+  }
+  function deleteMessage(id) {
+    if (confirm("Are you sure you want to delete this message?")) {
+      // Replace with real AJAX call or form submit
+      console.log("Deleting message with ID:", id);
+      // Example: send a fetch request to your backend
+      fetch(`/admin/messages/delete/${id}`, {
+        method: "POST", // or DELETE if your server handles it
+        headers: {
+          "Content-Type": "application/json",
+          'X-CSRF-Token': getCSRFTokenFromCookie()
+        }
+      }).then(res => {
+        if (res.ok) {
+          alert("Message deleted.");
+          location.reload(); // or dynamically remove the element from DOM
+        } else {
+          alert("Delete failed.");
+        }
+      });
+    }
+  }
+</script>
+
+{{ end }}

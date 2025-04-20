@@ -12,6 +12,11 @@ import (
 
 func (s *Server) Router() http.Handler {
 	e := echo.New()
+	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
+		TokenLookup:  "header:X-CSRF-Token,form:_csrf",
+		CookieName:   "_csrf", // name of the cookie that stores it
+		CookieSecure: true,    // set to true if using HTTPS
+	}))
 	e.Use(user.SessionMiddleware(s.store))
 	e.Renderer = Renderer()
 	e.Static("/static", "web/static")
@@ -19,7 +24,7 @@ func (s *Server) Router() http.Handler {
 	e.Use(middleware.Recover())
 
 	publicHandler := public.Handler{User: s.repository.User, Article: s.repository.Article, Contact: s.repository.Contact}
-	adminHandler := admin.Handler{User: s.repository.User, Article: s.repository.Article}
+	adminHandler := admin.Handler{User: s.repository.User, Article: s.repository.Article, Contact: s.repository.Contact}
 	userHandler := user.Handler{User: s.repository.User}
 
 	e.GET("/", publicHandler.HomePage)
@@ -29,8 +34,10 @@ func (s *Server) Router() http.Handler {
 	e.POST("/send-message", publicHandler.ContactUsPost)
 
 	adminGroup := e.Group("/admin")
-	adminGroup.GET("/statistics", user.AdminAuth(adminHandler.AdminStatsPage))
-	adminGroup.GET("/articles", user.AdminAuth(adminHandler.AdminHomePage))
+	adminGroup.GET("", user.AdminAuth(adminHandler.HomePage))
+	adminGroup.GET("/messages", user.AdminAuth(adminHandler.MessagesPage))
+	adminGroup.GET("/statistics", user.AdminAuth(adminHandler.StatsPage))
+	adminGroup.GET("/articles", user.AdminAuth(adminHandler.ArticlesPage))
 	adminGroup.POST("/articles/create", user.AdminAuth(adminHandler.ArticleCreate))
 	adminGroup.POST("/articles/:article_id/delete", user.AdminAuth(adminHandler.ArticleDelete))
 	adminGroup.POST("/articles/:article_id/update", user.AdminAuth(adminHandler.ArticleUpdate))

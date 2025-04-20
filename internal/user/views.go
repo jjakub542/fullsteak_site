@@ -12,15 +12,18 @@ type Handler struct {
 }
 
 func (h *Handler) LoginPage(c echo.Context) error {
+	csrfToken := c.Get("csrf").(string)
 	sessionID := c.Get("sessionID").(string)
 	store := c.Get("sessionStore").(*SessionStore)
 
 	if c.Request().Method == http.MethodGet {
 		role, ok := store.Get(sessionID, "role")
 		if ok || role == "admin" {
-			return c.Redirect(http.StatusSeeOther, "/admin/articles")
+			return c.Redirect(http.StatusSeeOther, "/admin")
 		}
-		return c.Render(http.StatusOK, "admin/login.html", nil)
+		return c.Render(http.StatusOK, "admin/login.html", map[string]interface{}{
+			"CSRFToken": csrfToken,
+		})
 	}
 
 	requestUser := User{
@@ -49,7 +52,7 @@ func (h *Handler) LoginPage(c echo.Context) error {
 	store.Set(sessionID, "authenticated", true)
 	store.Set(sessionID, "role", "admin")
 
-	return c.Redirect(http.StatusSeeOther, "/admin/articles")
+	return c.Redirect(http.StatusSeeOther, "/admin")
 }
 
 func (h *Handler) LogoutPage(c echo.Context) error {
