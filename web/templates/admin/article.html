@@ -45,6 +45,7 @@
       </div>
       <div class="row" style="margin-top: 40px;">
         <form class="col s12 center-align" style="margin: 8px; color:black" action="/admin/articles/{{ .Id }}/delete" method="post">
+          <input type="hidden" name="_csrf" value="{{ .CSRFToken }}">
           <div class="row">
             <div class="input-field col s12">
               <textarea name="check" id="check" class="materialize-textarea"></textarea>
