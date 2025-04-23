@@ -1,7 +1,6 @@
 package tests
 
 import (
-	"fullsteak/internal/database"
 	"fullsteak/internal/user"
 	"testing"
 )
@@ -32,6 +31,4 @@ func TestUserRepository(t *testing.T) {
 	if user2.PasswordHash != u.PasswordHash {
 		t.Fail()
 	}
-
-	database.DropTables(TestDB)
 }

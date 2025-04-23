@@ -1,7 +1,9 @@
 package tests
 
 import (
-	"fullsteak/internal/database"
+	"context"
+	"fmt"
+	"log"
 	"os"
 	"testing"
 
@@ -11,12 +13,14 @@ import (
 var TestDB *pgxpool.Pool
 
 func TestMain(m *testing.M) {
-	TestDB = database.ConnectTest()
-	database.InitTables(TestDB, "../tables.sql")
+	var err error
+	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", "localhost", "5432", "fullsteak_admin", "123", "fullsteak_db_test")
+	TestDB, err = pgxpool.New(context.Background(), connStr)
+	if err != nil {
+		log.Fatal("Error opening database connection:", err)
+	}
 
-	// Run tests
 	code := m.Run()
-	database.DropTables(TestDB)
 	TestDB.Close()
 	os.Exit(code)
 }

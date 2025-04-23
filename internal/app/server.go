@@ -12,7 +12,6 @@ import (
 
 	"fullsteak/internal/article"
 	"fullsteak/internal/contact"
-	"fullsteak/internal/database"
 	"fullsteak/internal/user"
 )
 
@@ -31,7 +30,7 @@ type Server struct {
 
 func NewServer() *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
-	db := database.Connect()
+	db := PostgresClient()
 	store := user.NewSessionStore()
 
 	NewServer := &Server{

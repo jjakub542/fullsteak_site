@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"fullsteak/internal/database"
+	"fullsteak/internal/app"
 	"fullsteak/internal/user"
 	"log"
 
@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	db := database.Connect()
+	db := app.PostgresClient()
 	var err error
 	newUser := user.User{IsSuperuser: true}
 

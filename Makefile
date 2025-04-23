@@ -1,4 +1,18 @@
-# Simple Makefile for a Go project
+# Ładowanie zmiennych z pliku .env
+ifneq ("$(wildcard .env)","")
+	include .env
+endif
+
+# Zmienna z .env
+DB_USER ?= fullsteak_admin
+DB_NAME_TEST ?= fullsteak_db_test
+
+DB_URL=postgres://$(DB_USERNAME):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=disable
+MIGRATE=migrate -path migrations -database "$(DB_URL)"
+TEST_DB_URL=postgres://$(DB_USERNAME):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME_TEST)?sslmode=disable
+MIGRATE_TEST=migrate -path migrations -database "$(TEST_DB_URL)"
+
+.PHONY: run test lint build migrate-up migrate-down migrate-force migrate-create reset-db db-console
 
 # Build the application
 all: build
@@ -13,17 +27,6 @@ build:
 run:
 	@go run cmd/server/main.go
 
-# Database create tables
-tables:
-	@go run cmd/tables/main.go
-
-# Database create articles
-articles:
-	@go run cmd/articles/main.go
-
-# Database drop tables
-drop:
-	@go run cmd/drop/main.go
 
 # Database create superuser
 superuser:
@@ -34,15 +37,12 @@ test:
 	@echo "Testing..."
 	@go test ./tests/... -v
 
-
-
 # Clean the binary
 clean:
 	@echo "Cleaning..."
 	@rm -f main
 
 # Live Reload
-
 watch:
 	@if command -v air > /dev/null; then \
             air; \
@@ -59,5 +59,41 @@ watch:
             fi; \
         fi
 
+migrate-up:
+	@echo "Running DB migrations..."
+	@$(MIGRATE) up
 
-.PHONY: all build run test clean watch
+migrate-down:
+	@echo "Rolling back..."
+	@$(MIGRATE) down 1
+
+migrate-create:
+	@read -p "Enter migration name: " name; \
+	migrate create -ext sql -dir migrations $$name
+
+reset-db:
+	@echo "Resetting DB inside Docker..."
+	docker exec -i $$(docker-compose ps -q postgres) psql -U $(DB_USERNAME) -d postgres -c "DROP DATABASE IF EXISTS $(DB_NAME);"
+	docker exec -i $$(docker-compose ps -q postgres) psql -U $(DB_USERNAME) -d postgres -c "CREATE DATABASE $(DB_NAME);"
+	@$(MIGRATE) up
+
+compose-up:
+	docker-compose up -d
+
+compose-down:
+	docker-compose down
+
+db-console:
+	psql $(DB_URL)
+
+create-test-db:
+	docker exec -i $$(docker-compose ps -q postgres) psql -U $(DB_USERNAME) -d postgres -c "CREATE DATABASE $(DB_NAME_TEST);"
+
+drop-test-db:
+	docker exec -i $$(docker-compose ps -q postgres) psql -U $(DB_USERNAME) -d postgres -c "DROP DATABASE $(DB_NAME_TEST);"
+
+migrate-test-db:
+	# Migracja testowej bazy
+	@echo "Migrating test DB..."
+	@$(MIGRATE_TEST) drop -f
+	@$(MIGRATE_TEST) up

@@ -31,3 +31,4 @@ main
 sql.db
 
 web/static/uploads/*
+dump.rdb
