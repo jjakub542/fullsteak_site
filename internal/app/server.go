@@ -7,40 +7,40 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/joho/godotenv/autoload"
 
 	"fullsteak/internal/article"
 	"fullsteak/internal/contact"
+	"fullsteak/internal/statistics"
 	"fullsteak/internal/user"
 )
 
-type Repository struct {
+type Services struct {
 	User    user.Repository
 	Article article.Repository
 	Contact contact.Repository
+	Stats   statistics.Service
 }
 
 type Server struct {
-	port       int
-	db         *pgxpool.Pool
-	store      *user.SessionStore
-	repository *Repository
+	port     int
+	store    *user.SessionStore
+	services *Services
 }
 
 func NewServer() *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	db := PostgresClient()
+	rdb := RedisClient()
 	store := user.NewSessionStore()
-
 	NewServer := &Server{
 		port:  port,
-		db:    db,
 		store: store,
-		repository: &Repository{
+		services: &Services{
 			User:    user.NewRepository(db),
 			Article: article.NewRepository(db),
 			Contact: contact.NewRepository(db),
+			Stats:   statistics.NewService(rdb),
 		},
 	}
 

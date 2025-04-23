@@ -24,10 +24,10 @@ func (s *Server) Router() http.Handler {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	publicHandler := public.Handler{User: s.repository.User, Article: s.repository.Article, Contact: s.repository.Contact}
-	adminHandler := admin.Handler{User: s.repository.User, Article: s.repository.Article, Contact: s.repository.Contact}
-	userHandler := user.Handler{User: s.repository.User}
-	contactHandler := contact.Handler{Contact: s.repository.Contact}
+	publicHandler := public.Handler{User: s.services.User, Article: s.services.Article, Contact: s.services.Contact, Stats: s.services.Stats}
+	adminHandler := admin.Handler{User: s.services.User, Article: s.services.Article, Contact: s.services.Contact, Stats: s.services.Stats}
+	userHandler := user.Handler{User: s.services.User}
+	contactHandler := contact.Handler{Contact: s.services.Contact}
 
 	e.GET("/", publicHandler.HomePage)
 	e.GET("/portfolio", publicHandler.PortfolioPage)

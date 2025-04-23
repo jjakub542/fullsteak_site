@@ -3,6 +3,7 @@ package admin
 import (
 	"fullsteak/internal/article"
 	"fullsteak/internal/contact"
+	"fullsteak/internal/statistics"
 	"fullsteak/internal/user"
 	"net/http"
 
@@ -13,6 +14,7 @@ type Handler struct {
 	User    user.Repository
 	Article article.Repository
 	Contact contact.Repository
+	Stats   statistics.Service
 }
 
 func (h *Handler) HomePage(c echo.Context) error {
@@ -20,7 +22,10 @@ func (h *Handler) HomePage(c echo.Context) error {
 }
 
 func (h *Handler) StatsPage(c echo.Context) error {
-	return c.Render(http.StatusOK, "admin/statistics.html", nil)
+	visits, _ := h.Stats.GetVisitorCount()
+	return c.Render(http.StatusOK, "admin/statistics.html", map[string]any{
+		"Views": visits,
+	})
 }
 
 func (h *Handler) MessagesPage(c echo.Context) error {
@@ -29,7 +34,7 @@ func (h *Handler) MessagesPage(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
-	return c.Render(http.StatusOK, "admin/messages.html", map[string]interface{}{
+	return c.Render(http.StatusOK, "admin/messages.html", map[string]any{
 		"Count":     len(messages),
 		"Messages":  messages,
 		"CSRFToken": csrfToken,

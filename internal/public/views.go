@@ -1,11 +1,13 @@
 package public
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
 	"fullsteak/internal/article"
 	"fullsteak/internal/contact"
+	"fullsteak/internal/statistics"
 	"fullsteak/internal/user"
 
 	"github.com/labstack/echo/v4"
@@ -15,10 +17,15 @@ type Handler struct {
 	User    user.Repository
 	Article article.Repository
 	Contact contact.Repository
+	Stats   statistics.Service
 }
 
 func (h *Handler) HomePage(c echo.Context) error {
 	csrfToken := c.Get("csrf").(string)
+	err := h.Stats.IncrementVisitorCount()
+	if err != nil {
+		log.Fatal(err)
+	}
 	return c.Render(http.StatusOK, "home.html", map[string]interface{}{
 		"PageTitle": "Home",
 		"CSRFToken": csrfToken,
@@ -62,6 +69,7 @@ func (h *Handler) ArticleView(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
+	go h.Stats.IncrementArticleViews(id)
 	return c.Render(http.StatusOK, "article.html", map[string]interface{}{
 		"PageTitle": a.Title,
 		"Article":   a,
