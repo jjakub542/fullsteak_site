@@ -24,8 +24,8 @@ func (s *Server) Router() http.Handler {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	publicHandler := public.Handler{User: s.services.User, Article: s.services.Article, Contact: s.services.Contact, Stats: s.services.Stats}
-	adminHandler := admin.Handler{User: s.services.User, Article: s.services.Article, Contact: s.services.Contact, Stats: s.services.Stats}
+	publicHandler := public.Handler{User: s.services.User, Article: s.services.Article, Contact: s.services.Contact}
+	adminHandler := admin.Handler{User: s.services.User, Article: s.services.Article, Contact: s.services.Contact}
 	userHandler := user.Handler{User: s.services.User}
 	contactHandler := contact.Handler{Contact: s.services.Contact}
 
@@ -40,7 +40,6 @@ func (s *Server) Router() http.Handler {
 	adminGroup.GET("", user.AdminAuth(adminHandler.HomePage))
 	adminGroup.GET("/messages", user.AdminAuth(adminHandler.MessagesPage))
 	adminGroup.DELETE("/messages/:id", user.AdminAuth(contactHandler.MessageDelete))
-	adminGroup.GET("/statistics", user.AdminAuth(adminHandler.StatsPage))
 	adminGroup.GET("/articles", user.AdminAuth(adminHandler.ArticlesPage))
 	adminGroup.POST("/articles/create", user.AdminAuth(adminHandler.ArticleCreate))
 	adminGroup.POST("/articles/:article_id/delete", user.AdminAuth(adminHandler.ArticleDelete))

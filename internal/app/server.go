@@ -11,7 +11,6 @@ import (
 
 	"fullsteak/internal/article"
 	"fullsteak/internal/contact"
-	"fullsteak/internal/statistics"
 	"fullsteak/internal/user"
 )
 
@@ -19,7 +18,6 @@ type Services struct {
 	User    user.Repository
 	Article article.Repository
 	Contact contact.Repository
-	Stats   statistics.Service
 }
 
 type Server struct {
@@ -31,7 +29,6 @@ type Server struct {
 func NewServer() *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	db := PostgresClient()
-	rdb := RedisClient()
 	store := user.NewSessionStore()
 	NewServer := &Server{
 		port:  port,
@@ -40,7 +37,6 @@ func NewServer() *http.Server {
 			User:    user.NewRepository(db),
 			Article: article.NewRepository(db),
 			Contact: contact.NewRepository(db),
-			Stats:   statistics.NewService(rdb),
 		},
 	}
 

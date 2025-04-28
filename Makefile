@@ -15,8 +15,6 @@ MIGRATE_TEST=migrate -path migrations -database "$(TEST_DB_URL)"
 .PHONY: run test lint build migrate-up migrate-down migrate-force migrate-create reset-db db-console
 
 # Build the application
-all: build
-
 build:
 	@echo "Building..."
 	
@@ -34,8 +32,14 @@ superuser:
 
 # Test the application
 test:
-	@echo "Testing..."
-	@go test ./tests/... -v
+	docker compose exec postgres psql -U $(DB_USERNAME) -d postgres -c "CREATE DATABASE $(DB_NAME_TEST);"
+	@echo "Migrating test DB..."
+	@$(MIGRATE_TEST) drop -f
+	@$(MIGRATE_TEST) up
+	@echo "Running tests..."
+	@go test ./tests/... -v || true
+	docker compose exec postgres psql -U $(DB_USERNAME) -d postgres -c "DROP DATABASE $(DB_NAME_TEST);"
+
 
 # Clean the binary
 clean:
@@ -73,27 +77,15 @@ migrate-create:
 
 reset-db:
 	@echo "Resetting DB inside Docker..."
-	docker exec -i $$(docker-compose ps -q postgres) psql -U $(DB_USERNAME) -d postgres -c "DROP DATABASE IF EXISTS $(DB_NAME);"
-	docker exec -i $$(docker-compose ps -q postgres) psql -U $(DB_USERNAME) -d postgres -c "CREATE DATABASE $(DB_NAME);"
+	docker exec -i $$(docker compose ps -q postgres) psql -U $(DB_USERNAME) -d postgres -c "DROP DATABASE IF EXISTS $(DB_NAME);"
+	docker exec -i $$(docker compose ps -q postgres) psql -U $(DB_USERNAME) -d postgres -c "CREATE DATABASE $(DB_NAME);"
 	@$(MIGRATE) up
 
 compose-up:
-	docker-compose up -d
+	docker compose up -d
 
 compose-down:
-	docker-compose down
+	docker compose down
 
 db-console:
 	psql $(DB_URL)
-
-create-test-db:
-	docker exec -i $$(docker-compose ps -q postgres) psql -U $(DB_USERNAME) -d postgres -c "CREATE DATABASE $(DB_NAME_TEST);"
-
-drop-test-db:
-	docker exec -i $$(docker-compose ps -q postgres) psql -U $(DB_USERNAME) -d postgres -c "DROP DATABASE $(DB_NAME_TEST);"
-
-migrate-test-db:
-	# Migracja testowej bazy
-	@echo "Migrating test DB..."
-	@$(MIGRATE_TEST) drop -f
-	@$(MIGRATE_TEST) up

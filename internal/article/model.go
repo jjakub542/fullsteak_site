@@ -23,7 +23,6 @@ type Article struct {
 	Public       bool      `json:"public"`
 	Images       []Image   `json:"images"`
 	CoverImageId *string   `json:"cover_image_id"`
-	Views        int64
 }
 
 func (i *Image) Save(src multipart.File) error {

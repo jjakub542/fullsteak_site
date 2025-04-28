@@ -3,7 +3,6 @@ package admin
 import (
 	"fullsteak/internal/article"
 	"fullsteak/internal/contact"
-	"fullsteak/internal/statistics"
 	"fullsteak/internal/user"
 	"net/http"
 
@@ -14,18 +13,10 @@ type Handler struct {
 	User    user.Repository
 	Article article.Repository
 	Contact contact.Repository
-	Stats   statistics.Service
 }
 
 func (h *Handler) HomePage(c echo.Context) error {
 	return c.Render(http.StatusOK, "admin/home.html", nil)
-}
-
-func (h *Handler) StatsPage(c echo.Context) error {
-	visits, _ := h.Stats.GetVisitorCount()
-	return c.Render(http.StatusOK, "admin/statistics.html", map[string]any{
-		"Views": visits,
-	})
 }
 
 func (h *Handler) MessagesPage(c echo.Context) error {

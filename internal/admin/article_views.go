@@ -14,10 +14,6 @@ func (h *Handler) ArticlesPage(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error")
 	}
-	for i := range articles {
-		views, _ := h.Stats.GetArticleViews(articles[i].Id)
-		articles[i].Views = views
-	}
 	return c.Render(http.StatusOK, "admin/articles.html", map[string]interface{}{
 		"Articles":  articles,
 		"CSRFToken": csrfToken,
